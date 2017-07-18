@@ -230,14 +230,14 @@ public abstract class PluginAdapter implements Plugin {
     public boolean modelFieldGenerated(Field field,
             TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
             IntrospectedTable introspectedTable,
-            ModelClassType modelClassType) {
+            Plugin.ModelClassType modelClassType) {
         return true;
     }
 
     public boolean modelGetterMethodGenerated(Method method,
             TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
             IntrospectedTable introspectedTable,
-            ModelClassType modelClassType) {
+            Plugin.ModelClassType modelClassType) {
         return true;
     }
 
@@ -254,7 +254,7 @@ public abstract class PluginAdapter implements Plugin {
     public boolean modelSetterMethodGenerated(Method method,
             TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
             IntrospectedTable introspectedTable,
-            ModelClassType modelClassType) {
+            Plugin.ModelClassType modelClassType) {
         return true;
     }
 

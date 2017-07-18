@@ -208,7 +208,7 @@ public abstract class IntrospectedTable {
     protected Map<String, Object> attributes;
 
     /** Internal attributes are used to store commonly accessed items by all code generators. */
-    protected Map<InternalAttribute, String> internalAttributes;
+    protected Map<IntrospectedTable.InternalAttribute, String> internalAttributes;
     
     /**
      * Table remarks retrieved from database metadata
@@ -233,7 +233,7 @@ public abstract class IntrospectedTable {
         baseColumns = new ArrayList<IntrospectedColumn>();
         blobColumns = new ArrayList<IntrospectedColumn>();
         attributes = new HashMap<String, Object>();
-        internalAttributes = new HashMap<InternalAttribute, String>();
+        internalAttributes = new HashMap<IntrospectedTable.InternalAttribute, String>();
     }
 
     /**
