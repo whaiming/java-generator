@@ -880,7 +880,7 @@ public final class PluginAggregator implements Plugin {
     public boolean modelFieldGenerated(Field field,
             TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
             IntrospectedTable introspectedTable,
-            ModelClassType modelClassType) {
+            Plugin.ModelClassType modelClassType) {
         boolean rc = true;
 
         for (Plugin plugin : plugins) {
@@ -897,7 +897,7 @@ public final class PluginAggregator implements Plugin {
     public boolean modelGetterMethodGenerated(Method method,
             TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
             IntrospectedTable introspectedTable,
-            ModelClassType modelClassType) {
+            Plugin.ModelClassType modelClassType) {
         boolean rc = true;
 
         for (Plugin plugin : plugins) {
@@ -914,7 +914,7 @@ public final class PluginAggregator implements Plugin {
     public boolean modelSetterMethodGenerated(Method method,
             TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
             IntrospectedTable introspectedTable,
-            ModelClassType modelClassType) {
+            Plugin.ModelClassType modelClassType) {
         boolean rc = true;
 
         for (Plugin plugin : plugins) {

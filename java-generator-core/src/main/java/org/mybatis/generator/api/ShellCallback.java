@@ -104,7 +104,7 @@ public interface ShellCallback {
      *             exception message to the list of warnings automatically.
      */
     String mergeJavaFile(String newFileSource, String existingFileFullPath,
-                         String[] javadocTags, String fileEncoding) throws ShellException;
+            String[] javadocTags, String fileEncoding) throws ShellException;
 
     /**
      * After all files are saved to the file system, this method is called
