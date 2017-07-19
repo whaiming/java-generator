@@ -24,10 +24,7 @@ import static org.mybatis.generator.internal.util.StringUtility.stringContainsSp
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -215,11 +212,11 @@ public class DatabaseIntrospector {
      * @throws SQLException
      *             the SQL exception
      */
-    public List<IntrospectedTable> introspectTables(TableConfiguration tc)
+    public List<IntrospectedTable> introspectTables(TableConfiguration tc,Connection conn)
             throws SQLException {
 
         // get the raw columns from the DB
-        Map<ActualTableName, List<IntrospectedColumn>> columns = getColumns(tc);
+        Map<ActualTableName, List<IntrospectedColumn>> columns = getColumns(tc,conn);
 
         if (columns.isEmpty()) {
             warnings.add(getString("Warning.19", tc.getCatalog(), //$NON-NLS-1$
@@ -526,7 +523,7 @@ public class DatabaseIntrospector {
      *             the SQL exception
      */
     private Map<ActualTableName, List<IntrospectedColumn>> getColumns(
-            TableConfiguration tc) throws SQLException {
+            TableConfiguration tc,Connection conn) throws SQLException {
         String localCatalog;
         String localSchema;
         String localTableName;
@@ -591,17 +588,17 @@ public class DatabaseIntrospector {
             localTableName = sb.toString();
         }
 
-        Map<ActualTableName, List<IntrospectedColumn>> answer = new HashMap<ActualTableName, List<IntrospectedColumn>>();
+        Map<ActualTableName, List<IntrospectedColumn>> answer =
+                new HashMap<ActualTableName, List<IntrospectedColumn>>();
 
         if (logger.isDebugEnabled()) {
             String fullTableName = composeFullyQualifiedTableName(localCatalog, localSchema,
-                            localTableName, '.');
+                    localTableName, '.');
             logger.debug(getString("Tracing.1", fullTableName)); //$NON-NLS-1$
         }
 
         ResultSet rs = databaseMetaData.getColumns(localCatalog, localSchema,
                 localTableName, "%"); //$NON-NLS-1$
-        
         boolean supportsIsAutoIncrement = false;
         boolean supportsIsGeneratedColumn = false;
         ResultSetMetaData rsmd = rs.getMetaData();
@@ -615,7 +612,26 @@ public class DatabaseIntrospector {
             }
         }
 
-        while (rs.next()) {
+        String sql ="SELECT\n" +
+                "\tconvert(varchar(1000), C.\n" +
+                "VALUE)\n" +
+                "\tAS remarks\n" +
+                "FROM\n" +
+                "\tsys.tables A\n" +
+                "INNER JOIN sys.columns B ON B.object_id = A.object_id\n" +
+                "LEFT JOIN sys.extended_properties C ON C.major_id = B.object_id\n" +
+                "AND C.minor_id = B.column_id\n" +
+                "WHERE\n" +
+                "\tA.name = ? ";
+        System.out.println(sql);
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1 ,localTableName);
+        ResultSet rs1 = ps.executeQuery();
+
+
+        int i = 0;
+        while (rs.next() && rs1.next()) {
+
             IntrospectedColumn introspectedColumn = ObjectFactory
                     .createIntrospectedColumn(context);
 
@@ -626,15 +642,17 @@ public class DatabaseIntrospector {
             introspectedColumn
                     .setNullable(rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable); //$NON-NLS-1$
             introspectedColumn.setScale(rs.getInt("DECIMAL_DIGITS")); //$NON-NLS-1$
-            introspectedColumn.setRemarks(rs.getString("REMARKS")); //$NON-NLS-1$
+            introspectedColumn.setRemarks(rs1.getString("remarks")); //$NON-NLS-1$
             introspectedColumn.setDefaultValue(rs.getString("COLUMN_DEF")); //$NON-NLS-1$
-            
+
             if (supportsIsAutoIncrement) {
-                introspectedColumn.setAutoIncrement("YES".equals(rs.getString("IS_AUTOINCREMENT"))); //$NON-NLS-1$ //$NON-NLS-2$
+                introspectedColumn.setAutoIncrement(
+                        "YES".equals(rs.getString("IS_AUTOINCREMENT"))); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            
+
             if (supportsIsGeneratedColumn) {
-                introspectedColumn.setGeneratedColumn("YES".equals(rs.getString("IS_GENERATEDCOLUMN"))); //$NON-NLS-1$ //$NON-NLS-2$
+                introspectedColumn.setGeneratedColumn(
+                        "YES".equals(rs.getString("IS_GENERATEDCOLUMN"))); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             ActualTableName atn = new ActualTableName(
@@ -659,6 +677,7 @@ public class DatabaseIntrospector {
             }
         }
 
+        closeResultSet(rs1);
         closeResultSet(rs);
 
         if (answer.size() > 1
