@@ -650,7 +650,7 @@ public class Context extends PropertyHolder {
 
                 callback.startTask(getString("Progress.1", tableName)); //$NON-NLS-1$
                 List<IntrospectedTable> tables = databaseIntrospector
-                        .introspectTables(tc);
+                        .introspectTables(tc,connection);
 
                 if (tables != null) {
                     introspectedTables.addAll(tables);
