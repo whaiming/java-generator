@@ -64,6 +64,7 @@ public class Context extends PropertyHolder {
     /** The java type resolver configuration. */
     private JavaTypeResolverConfiguration javaTypeResolverConfiguration;
 
+    private JavaBoGeneratorConfiguration javaBoGeneratorConfiguration;
     /** The java model generator configuration. */
     private JavaModelGeneratorConfiguration javaModelGeneratorConfiguration;
 
@@ -286,6 +287,14 @@ public class Context extends PropertyHolder {
     public void setJavaClientGeneratorConfiguration(
             JavaClientGeneratorConfiguration javaClientGeneratorConfiguration) {
         this.javaClientGeneratorConfiguration = javaClientGeneratorConfiguration;
+    }
+
+    public JavaBoGeneratorConfiguration getJavaBoGeneratorConfiguration() {
+        return javaBoGeneratorConfiguration;
+    }
+
+    public void setJavaBoGeneratorConfiguration(JavaBoGeneratorConfiguration javaBoGeneratorConfiguration) {
+        this.javaBoGeneratorConfiguration = javaBoGeneratorConfiguration;
     }
 
     /**

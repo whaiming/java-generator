@@ -55,6 +55,17 @@ public class GeneratedJavaFile extends GeneratedFile {
         this.javaFormatter = javaFormatter;
     }
 
+    public GeneratedJavaFile(CompilationUnit compilationUnit,
+                             String targetPackage,
+                             String targetProject,
+                             String fileEncoding,
+                             JavaFormatter javaFormatter) {
+        super(targetProject);
+        this.compilationUnit = compilationUnit;
+        this.compilationUnit.getType().setPackageName(targetPackage);
+        this.fileEncoding = fileEncoding;
+        this.javaFormatter = javaFormatter;
+    }
     /**
      * Instantiates a new generated java file.
      *

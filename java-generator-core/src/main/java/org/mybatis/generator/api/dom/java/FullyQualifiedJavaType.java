@@ -192,6 +192,10 @@ public class FullyQualifiedJavaType implements
         return packageName;
     }
 
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
     /**
      * Gets the short name.
      *
