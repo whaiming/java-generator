@@ -111,6 +111,11 @@
             <artifactId>sqljdbc4</artifactId>
             <version>6.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.ibatis</groupId>
+            <artifactId>ibatis-core</artifactId>
+            <version>3.0</version>
+        </dependency>
     </dependencies>
 
     <description>Java Generator - a code generator for MyBatis and iBatis.</description>

@@ -37,6 +37,7 @@ import org.mybatis.generator.codegen.mybatis3.model.PrimaryKeyGenerator;
 import org.mybatis.generator.codegen.mybatis3.model.RecordWithBLOBsGenerator;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
 import org.mybatis.generator.config.PropertyRegistry;
+import org.mybatis.generator.config.TableConfiguration;
 import org.mybatis.generator.internal.ObjectFactory;
 
 /**
@@ -268,9 +269,14 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
             List<CompilationUnit> compilationUnits = javaGenerator
                     .getCompilationUnits();
             for (CompilationUnit compilationUnit : compilationUnits) {
+                String baseShortName="Bo" ;
+                for (TableConfiguration t: context.getTableConfigurations()){
+                    baseShortName = t.getBoObjectName();
+                }
                 GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit,
                         context.getJavaBoGeneratorConfiguration()
                                 .getTargetPackage(),//此处给GeneratedJavaFile增加了一种构造方法，并做了相关修改
+                        baseShortName,
                         context.getJavaBoGeneratorConfiguration()
                                 .getTargetProject(),
                         context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),

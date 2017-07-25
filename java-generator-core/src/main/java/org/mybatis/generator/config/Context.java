@@ -218,7 +218,13 @@ public class Context extends PropertyHolder {
         } else {
             connectionFactoryConfiguration.validate(errors);
         }
-            
+
+        if (javaBoGeneratorConfiguration == null) {
+            errors.add(getString("ValidationError.28", id)); //$NON-NLS-1$
+        } else {
+            javaBoGeneratorConfiguration.validate(errors, id);
+        }
+
         if (javaModelGeneratorConfiguration == null) {
             errors.add(getString("ValidationError.8", id)); //$NON-NLS-1$
         } else {

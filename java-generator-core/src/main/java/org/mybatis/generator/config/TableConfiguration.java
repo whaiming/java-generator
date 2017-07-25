@@ -41,6 +41,7 @@ public class TableConfiguration extends PropertyHolder {
     /** The insert statement enabled. */
     private boolean insertStatementEnabled;
 
+    private boolean insertSelectiveStatementEnabled;
     /** The select by primary key statement enabled. */
     private boolean selectByPrimaryKeyStatementEnabled;
 
@@ -61,6 +62,7 @@ public class TableConfiguration extends PropertyHolder {
 
     /** The update by example statement enabled. */
     private boolean updateByExampleStatementEnabled;
+    private boolean updateByExampleSelectiveStatementEnabled;
 
     /** The column overrides. */
     private List<ColumnOverride> columnOverrides;
@@ -85,6 +87,8 @@ public class TableConfiguration extends PropertyHolder {
     
     /** The table name. */
     private String tableName;
+
+    private String boObjectName;
     
     /** The domain object name. */
     private String domainObjectName;
@@ -129,14 +133,16 @@ public class TableConfiguration extends PropertyHolder {
         columnOverrides = new ArrayList<ColumnOverride>();
         ignoredColumns = new HashMap<IgnoredColumn, Boolean>();
 
-        insertStatementEnabled = true;
+        insertStatementEnabled = false;
+        insertSelectiveStatementEnabled = true;
         selectByPrimaryKeyStatementEnabled = true;
         selectByExampleStatementEnabled = true;
-        updateByPrimaryKeyStatementEnabled = true;
+        updateByPrimaryKeyStatementEnabled = false;
         deleteByPrimaryKeyStatementEnabled = true;
         deleteByExampleStatementEnabled = true;
         countByExampleStatementEnabled = true;
-        updateByExampleStatementEnabled = true;
+        updateByExampleStatementEnabled = false;
+        updateByExampleSelectiveStatementEnabled = true;
     }
 
     /**
@@ -176,6 +182,24 @@ public class TableConfiguration extends PropertyHolder {
      */
     public void setInsertStatementEnabled(boolean insertStatementEnabled) {
         this.insertStatementEnabled = insertStatementEnabled;
+    }
+
+    public boolean isInsertSelectiveStatementEnabled() {
+        return insertSelectiveStatementEnabled;
+    }
+
+    public void setInsertSelectiveStatementEnabled(boolean insertSelectiveStatementEnabled) {
+        this.insertSelectiveStatementEnabled = insertSelectiveStatementEnabled;
+    }
+
+
+
+    public boolean isUpdateByExampleSelectiveStatementEnabled() {
+        return updateByExampleSelectiveStatementEnabled;
+    }
+
+    public void setUpdateByExampleSelectiveStatementEnabled(boolean updateByExampleSelectiveStatementEnabled) {
+        this.updateByExampleSelectiveStatementEnabled = updateByExampleSelectiveStatementEnabled;
     }
 
     /**
@@ -418,11 +442,13 @@ public class TableConfiguration extends PropertyHolder {
     public boolean areAnyStatementsEnabled() {
         return selectByExampleStatementEnabled
                 || selectByPrimaryKeyStatementEnabled || insertStatementEnabled
+                || insertSelectiveStatementEnabled
                 || updateByPrimaryKeyStatementEnabled
                 || deleteByExampleStatementEnabled
                 || deleteByPrimaryKeyStatementEnabled
                 || countByExampleStatementEnabled
-                || updateByExampleStatementEnabled;
+                || updateByExampleStatementEnabled
+                || updateByExampleSelectiveStatementEnabled;
     }
 
     /**
@@ -471,6 +497,14 @@ public class TableConfiguration extends PropertyHolder {
      */
     public void setCatalog(String catalog) {
         this.catalog = catalog;
+    }
+
+    public String getBoObjectName() {
+        return boObjectName;
+    }
+
+    public void setBoObjectName(String boObjectName) {
+        this.boObjectName = boObjectName;
     }
 
     /**
@@ -620,13 +654,21 @@ public class TableConfiguration extends PropertyHolder {
             xmlElement.addAttribute(new Attribute("alias", alias)); //$NON-NLS-1$
         }
 
+        if (stringHasValue(boObjectName)) {
+            xmlElement.addAttribute(new Attribute(
+                    "boObjectName", boObjectName)); //$NON-NLS-1$
+        }
+
         if (stringHasValue(domainObjectName)) {
             xmlElement.addAttribute(new Attribute(
                     "domainObjectName", domainObjectName)); //$NON-NLS-1$
         }
 
         if (!insertStatementEnabled) {
-            xmlElement.addAttribute(new Attribute("enableInsert", "false")); //$NON-NLS-1$ //$NON-NLS-2$
+            xmlElement.addAttribute(new Attribute("enableInsert", "true")); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        if (!insertSelectiveStatementEnabled) {
+            xmlElement.addAttribute(new Attribute("enableInsertSelectiveSelective", "false")); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (!selectByPrimaryKeyStatementEnabled) {
@@ -639,9 +681,10 @@ public class TableConfiguration extends PropertyHolder {
                     "enableSelectByExample", "false")); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
+
         if (!updateByPrimaryKeyStatementEnabled) {
             xmlElement.addAttribute(new Attribute(
-                    "enableUpdateByPrimaryKey", "false")); //$NON-NLS-1$ //$NON-NLS-2$
+                    "enableUpdateByPrimaryKey", "true")); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (!deleteByPrimaryKeyStatementEnabled) {
@@ -659,9 +702,14 @@ public class TableConfiguration extends PropertyHolder {
                     "enableCountByExample", "false")); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
+
         if (!updateByExampleStatementEnabled) {
             xmlElement.addAttribute(new Attribute(
-                    "enableUpdateByExample", "false")); //$NON-NLS-1$ //$NON-NLS-2$
+                    "enableUpdateByExample", "true")); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        if (!updateByExampleSelectiveStatementEnabled) {
+            xmlElement.addAttribute(new Attribute(
+                    "enableUpdateByExampleSelective", "false")); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if (stringHasValue(selectByPrimaryKeyQueryId)) {

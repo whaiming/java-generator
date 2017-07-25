@@ -51,7 +51,7 @@
   tables.
 -->
 <!ELEMENT context (property*, plugin*, commentGenerator?, (connectionFactory | jdbcConnection), javaTypeResolver?,
-        javaBoGenerator,javaModelGenerator, sqlMapGenerator?, javaClientGenerator?, table+)>
+        javaBoGenerator?,javaModelGenerator, sqlMapGenerator?, javaClientGenerator?, table+)>
 <!ATTLIST context id ID #REQUIRED
   defaultModelType CDATA #IMPLIED
   targetRuntime CDATA #IMPLIED
@@ -161,10 +161,12 @@
   schema CDATA #IMPLIED
   tableName CDATA #REQUIRED
   alias CDATA #IMPLIED
+  boObjectName CDATA #IMPLIED
   domainObjectName CDATA #IMPLIED
   mapperName CDATA #IMPLIED
   sqlProviderName CDATA #IMPLIED
   enableInsert CDATA #IMPLIED
+        enableInsertSelective CDATA #IMPLIED
   enableSelectByPrimaryKey CDATA #IMPLIED
   enableSelectByExample CDATA #IMPLIED
   enableUpdateByPrimaryKey CDATA #IMPLIED
@@ -172,6 +174,7 @@
   enableDeleteByExample CDATA #IMPLIED
   enableCountByExample CDATA #IMPLIED
   enableUpdateByExample CDATA #IMPLIED
+        enableUpdateByExampleSelective CDATA #IMPLIED
   selectByPrimaryKeyQueryId CDATA #IMPLIED
   selectByExampleQueryId CDATA #IMPLIED
   modelType CDATA #IMPLIED

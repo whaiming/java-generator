@@ -82,7 +82,7 @@ public abstract class BaseRules implements Rules {
             return false;
         }
         
-        return tableConfiguration.isInsertStatementEnabled();
+        return tableConfiguration.isInsertSelectiveStatementEnabled();
     }
 
     /**
@@ -406,7 +406,7 @@ public abstract class BaseRules implements Rules {
             return false;
         }
         
-        boolean rc = tableConfiguration.isUpdateByExampleStatementEnabled();
+        boolean rc = tableConfiguration.isUpdateByExampleSelectiveStatementEnabled();
 
         return rc;
     }
