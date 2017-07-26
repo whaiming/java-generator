@@ -612,29 +612,38 @@ public class DatabaseIntrospector {
             }
         }
 
-        String sql ="SELECT\n" +
-                "\tconvert(varchar(1000), C.\n" +
-                "VALUE)\n" +
-                "\tAS remarks\n" +
-                "FROM\n" +
-                "\tsys.tables A\n" +
-                "INNER JOIN sys.columns B ON B.object_id = A.object_id\n" +
-                "LEFT JOIN sys.extended_properties C ON C.major_id = B.object_id\n" +
-                "AND C.minor_id = B.column_id\n" +
-                "WHERE\n" +
-                "\tA.name = ? ";
-        System.out.println(sql);
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setString(1 ,localTableName);
-        ResultSet rs1 = ps.executeQuery();
-
-
-        int i = 0;
-        while (rs.next() && rs1.next()) {
-
+        /**
+         * 数据库类型判断，如果是sqlServer则执行下面语句,做到对其他数据库的兼容
+         */
+        ResultSet sqlServerResultSet = null;
+        boolean isSqlServer = conn.getMetaData().getDriverName().toUpperCase()
+                .indexOf("SQL SERVER") != -1;
+       if (isSqlServer) {
+           //sqljdbc与sqljdbc4不同，sqlserver中间有空格
+           String sql = "SELECT\n" +
+                   "\tconvert(varchar(1000), C.\n" +
+                   "VALUE)\n" +
+                   "\tAS REMARKS\n" +
+                   "FROM\n" +
+                   "\tsys.tables A\n" +
+                   "INNER JOIN sys.columns B ON B.object_id = A.object_id\n" +
+                   "LEFT JOIN sys.extended_properties C ON C.major_id = B.object_id\n" +
+                   "AND C.minor_id = B.column_id\n" +
+                   "WHERE\n" +
+                   "\tA.name = ? ";
+           PreparedStatement ps = conn.prepareStatement(sql);
+           ps.setString(1, localTableName);
+           sqlServerResultSet = ps.executeQuery();
+       }
+        while (rs.next()) {
             IntrospectedColumn introspectedColumn = ObjectFactory
                     .createIntrospectedColumn(context);
-
+            if (isSqlServer){
+                sqlServerResultSet.next();
+                introspectedColumn.setRemarks(sqlServerResultSet.getString("REMARKS")); //$NON-NLS-1$
+            }else {
+                introspectedColumn.setRemarks(rs.getString("REMARKS")); //$NON-NLS-1$
+            }
             introspectedColumn.setTableAlias(tc.getAlias());
             introspectedColumn.setJdbcType(rs.getInt("DATA_TYPE")); //$NON-NLS-1$
             introspectedColumn.setLength(rs.getInt("COLUMN_SIZE")); //$NON-NLS-1$
@@ -642,7 +651,7 @@ public class DatabaseIntrospector {
             introspectedColumn
                     .setNullable(rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable); //$NON-NLS-1$
             introspectedColumn.setScale(rs.getInt("DECIMAL_DIGITS")); //$NON-NLS-1$
-            introspectedColumn.setRemarks(rs1.getString("remarks")); //$NON-NLS-1$
+
             introspectedColumn.setDefaultValue(rs.getString("COLUMN_DEF")); //$NON-NLS-1$
 
             if (supportsIsAutoIncrement) {
@@ -677,7 +686,7 @@ public class DatabaseIntrospector {
             }
         }
 
-        closeResultSet(rs1);
+        closeResultSet(sqlServerResultSet);
         closeResultSet(rs);
 
         if (answer.size() > 1

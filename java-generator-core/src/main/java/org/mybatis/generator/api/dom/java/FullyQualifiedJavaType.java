@@ -192,6 +192,10 @@ public class FullyQualifiedJavaType implements
         return packageName;
     }
 
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
     /**
      * Gets the short name.
      *
@@ -236,11 +240,15 @@ public class FullyQualifiedJavaType implements
         return baseShortName;
     }
 
+    public void setBaseShortName(String baseShortName) {
+        this.baseShortName = baseShortName;
+    }
+
     /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
+         * (non-Javadoc)
+         *
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

@@ -64,6 +64,7 @@ public class Context extends PropertyHolder {
     /** The java type resolver configuration. */
     private JavaTypeResolverConfiguration javaTypeResolverConfiguration;
 
+    private JavaBoGeneratorConfiguration javaBoGeneratorConfiguration;
     /** The java model generator configuration. */
     private JavaModelGeneratorConfiguration javaModelGeneratorConfiguration;
 
@@ -217,7 +218,13 @@ public class Context extends PropertyHolder {
         } else {
             connectionFactoryConfiguration.validate(errors);
         }
-            
+
+        if (javaBoGeneratorConfiguration == null) {
+            errors.add(getString("ValidationError.28", id)); //$NON-NLS-1$
+        } else {
+            javaBoGeneratorConfiguration.validate(errors, id);
+        }
+
         if (javaModelGeneratorConfiguration == null) {
             errors.add(getString("ValidationError.8", id)); //$NON-NLS-1$
         } else {
@@ -286,6 +293,14 @@ public class Context extends PropertyHolder {
     public void setJavaClientGeneratorConfiguration(
             JavaClientGeneratorConfiguration javaClientGeneratorConfiguration) {
         this.javaClientGeneratorConfiguration = javaClientGeneratorConfiguration;
+    }
+
+    public JavaBoGeneratorConfiguration getJavaBoGeneratorConfiguration() {
+        return javaBoGeneratorConfiguration;
+    }
+
+    public void setJavaBoGeneratorConfiguration(JavaBoGeneratorConfiguration javaBoGeneratorConfiguration) {
+        this.javaBoGeneratorConfiguration = javaBoGeneratorConfiguration;
     }
 
     /**

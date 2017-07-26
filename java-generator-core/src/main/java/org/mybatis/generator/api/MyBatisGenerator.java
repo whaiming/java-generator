@@ -35,10 +35,7 @@ import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.MergeConstants;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.ShellException;
-import org.mybatis.generator.internal.DefaultShellCallback;
-import org.mybatis.generator.internal.ObjectFactory;
-import org.mybatis.generator.internal.NullProgressCallback;
-import org.mybatis.generator.internal.XmlFileMergerJaxp;
+import org.mybatis.generator.internal.*;
 
 /**
  * This class is the main interface to MyBatis generator. A typical execution of the tool involves these steps:
@@ -278,6 +275,7 @@ public class MyBatisGenerator {
             for (GeneratedXmlFile gxf : generatedXmlFiles) {
                 projects.add(gxf.getTargetProject());
                 writeGeneratedXmlFile(gxf, callback);
+
             }
 
             for (GeneratedJavaFile gjf : generatedJavaFiles) {
@@ -301,8 +299,10 @@ public class MyBatisGenerator {
             File directory = shellCallback.getDirectory(gjf
                     .getTargetProject(), gjf.getTargetPackage());
             targetFile = new File(directory, gjf.getFileName());
+//            JavaFileMergerJaxp.getMergedSource(gjf,targetFile);
             if (targetFile.exists()) {
                 if (shellCallback.isMergeSupported()) {
+
                     source = shellCallback.mergeJavaFile(gjf
                             .getFormattedContent(), targetFile
                             .getAbsolutePath(),
@@ -381,6 +381,7 @@ public class MyBatisGenerator {
      *             Signals that an I/O exception has occurred.
      */
     private void writeFile(File file, String content, String fileEncoding) throws IOException {
+
         FileOutputStream fos = new FileOutputStream(file, false);
         OutputStreamWriter osw;
         if (fileEncoding == null) {

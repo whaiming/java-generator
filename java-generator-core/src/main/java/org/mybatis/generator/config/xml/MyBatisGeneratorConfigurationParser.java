@@ -37,25 +37,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import org.mybatis.generator.config.ColumnOverride;
-import org.mybatis.generator.config.ColumnRenamingRule;
-import org.mybatis.generator.config.CommentGeneratorConfiguration;
-import org.mybatis.generator.config.Configuration;
-import org.mybatis.generator.config.ConnectionFactoryConfiguration;
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.GeneratedKey;
-import org.mybatis.generator.config.IgnoredColumn;
-import org.mybatis.generator.config.IgnoredColumnException;
-import org.mybatis.generator.config.IgnoredColumnPattern;
-import org.mybatis.generator.config.JDBCConnectionConfiguration;
-import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
-import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
-import org.mybatis.generator.config.JavaTypeResolverConfiguration;
-import org.mybatis.generator.config.ModelType;
-import org.mybatis.generator.config.PluginConfiguration;
-import org.mybatis.generator.config.PropertyHolder;
-import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
-import org.mybatis.generator.config.TableConfiguration;
+import org.mybatis.generator.config.*;
 import org.mybatis.generator.exception.XMLParserException;
 import org.mybatis.generator.internal.ObjectFactory;
 import org.w3c.dom.Element;
@@ -193,6 +175,8 @@ public class MyBatisGeneratorConfigurationParser {
                 parseJdbcConnection(context, childNode);
             } else if ("connectionFactory".equals(childNode.getNodeName())) { //$NON-NLS-1$
                 parseConnectionFactory(context, childNode);
+            } else if ("javaBoGenerator".equals(childNode.getNodeName())) { //$NON-NLS-1$
+                parseJavaBoGenerator(context, childNode);
             } else if ("javaModelGenerator".equals(childNode.getNodeName())) { //$NON-NLS-1$
                 parseJavaModelGenerator(context, childNode);
             } else if ("javaTypeResolver".equals(childNode.getNodeName())) { //$NON-NLS-1$
@@ -241,9 +225,13 @@ public class MyBatisGeneratorConfigurationParser {
         String catalog = attributes.getProperty("catalog"); //$NON-NLS-1$
         String schema = attributes.getProperty("schema"); //$NON-NLS-1$
         String tableName = attributes.getProperty("tableName"); //$NON-NLS-1$
+
+        String boObjectName = attributes.getProperty("boObjectName"); //$NON-NLS-1$
+
         String domainObjectName = attributes.getProperty("domainObjectName"); //$NON-NLS-1$
         String alias = attributes.getProperty("alias"); //$NON-NLS-1$
         String enableInsert = attributes.getProperty("enableInsert"); //$NON-NLS-1$
+        String enableInsertSelective = attributes.getProperty("enableInsertSelective"); //$NON-NLS-1$
         String enableSelectByPrimaryKey = attributes
                 .getProperty("enableSelectByPrimaryKey"); //$NON-NLS-1$
         String enableSelectByExample = attributes
@@ -258,6 +246,8 @@ public class MyBatisGeneratorConfigurationParser {
                 .getProperty("enableCountByExample"); //$NON-NLS-1$
         String enableUpdateByExample = attributes
                 .getProperty("enableUpdateByExample"); //$NON-NLS-1$
+        String enableUpdateByExampleSelective = attributes
+                .getProperty("enableUpdateByExampleSelective"); //$NON-NLS-1$
         String selectByPrimaryKeyQueryId = attributes
                 .getProperty("selectByPrimaryKeyQueryId"); //$NON-NLS-1$
         String selectByExampleQueryId = attributes
@@ -283,6 +273,12 @@ public class MyBatisGeneratorConfigurationParser {
             tc.setTableName(tableName);
         }
 
+
+
+        if (stringHasValue(boObjectName)) {
+            tc.setBoObjectName(boObjectName);
+        }
+
         if (stringHasValue(domainObjectName)) {
             tc.setDomainObjectName(domainObjectName);
         }
@@ -293,6 +289,9 @@ public class MyBatisGeneratorConfigurationParser {
 
         if (stringHasValue(enableInsert)) {
             tc.setInsertStatementEnabled(isTrue(enableInsert));
+        }
+        if (stringHasValue(enableInsertSelective)) {
+            tc.setInsertSelectiveStatementEnabled(isTrue(enableInsertSelective));
         }
 
         if (stringHasValue(enableSelectByPrimaryKey)) {
@@ -330,6 +329,10 @@ public class MyBatisGeneratorConfigurationParser {
                     isTrue(enableUpdateByExample));
         }
 
+        if (stringHasValue(enableUpdateByExampleSelective)) {
+            tc.setUpdateByExampleSelectiveStatementEnabled(
+                    isTrue(enableUpdateByExampleSelective));
+        }
         if (stringHasValue(selectByPrimaryKeyQueryId)) {
             tc.setSelectByPrimaryKeyQueryId(selectByPrimaryKeyQueryId);
         }
@@ -570,6 +573,34 @@ public class MyBatisGeneratorConfigurationParser {
             }
         }
     }
+
+    protected void parseJavaBoGenerator(Context context, Node node) {
+        JavaBoGeneratorConfiguration javaBoGeneratorConfiguration = new JavaBoGeneratorConfiguration();
+
+        context
+                .setJavaBoGeneratorConfiguration(javaBoGeneratorConfiguration);
+
+        Properties attributes = parseAttributes(node);
+        String targetPackage = attributes.getProperty("targetPackage"); //$NON-NLS-1$
+        String targetProject = attributes.getProperty("targetProject"); //$NON-NLS-1$
+
+        javaBoGeneratorConfiguration.setTargetPackage(targetPackage);
+        javaBoGeneratorConfiguration.setTargetProject(targetProject);
+
+        NodeList nodeList = node.getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node childNode = nodeList.item(i);
+
+            if (childNode.getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+
+            if ("property".equals(childNode.getNodeName())) { //$NON-NLS-1$
+                parseProperty(javaBoGeneratorConfiguration, childNode);
+            }
+        }
+    }
+
 
     protected void parseJavaModelGenerator(Context context, Node node) {
         JavaModelGeneratorConfiguration javaModelGeneratorConfiguration = new JavaModelGeneratorConfiguration();
