@@ -149,6 +149,10 @@ public abstract class PluginAdapter implements Plugin {
             Interface interfaze, IntrospectedTable introspectedTable) {
         return true;
     }
+    public boolean clientSelectNotDeleteByPrimaryKeyMethodGenerated(Method method,
+                                                            Interface interfaze, IntrospectedTable introspectedTable){
+        return true;
+    }
 
     public boolean clientSelectByPrimaryKeyMethodGenerated(Method method,
             TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
@@ -449,6 +453,10 @@ public abstract class PluginAdapter implements Plugin {
 
     public boolean sqlMapSelectAllElementGenerated(XmlElement element,
             IntrospectedTable introspectedTable) {
+        return true;
+    }
+    public boolean sqlMapSelectNotDeleteAllElementGenerated(XmlElement element,
+                                                   IntrospectedTable introspectedTable) {
         return true;
     }
 }

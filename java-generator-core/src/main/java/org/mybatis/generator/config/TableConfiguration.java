@@ -45,6 +45,8 @@ public class TableConfiguration extends PropertyHolder {
     /** The select by primary key statement enabled. */
     private boolean selectByPrimaryKeyStatementEnabled;
 
+    private boolean selectNotDeleteByPrimaryKeyStatementEnabled;
+
     /** The select by example statement enabled. */
     private boolean selectByExampleStatementEnabled;
 
@@ -62,6 +64,11 @@ public class TableConfiguration extends PropertyHolder {
 
     /** The update by example statement enabled. */
     private boolean updateByExampleStatementEnabled;
+
+    private boolean selectAllStatementEnabled;
+
+    private boolean selectNotDeleteAllStatementEnabled;
+
     private boolean updateByExampleSelectiveStatementEnabled;
 
     /** The column overrides. */
@@ -136,6 +143,7 @@ public class TableConfiguration extends PropertyHolder {
         insertStatementEnabled = false;
         insertSelectiveStatementEnabled = true;
         selectByPrimaryKeyStatementEnabled = true;
+        selectNotDeleteByPrimaryKeyStatementEnabled = false;
         selectByExampleStatementEnabled = true;
         updateByPrimaryKeyStatementEnabled = false;
         deleteByPrimaryKeyStatementEnabled = true;
@@ -143,6 +151,33 @@ public class TableConfiguration extends PropertyHolder {
         countByExampleStatementEnabled = true;
         updateByExampleStatementEnabled = false;
         updateByExampleSelectiveStatementEnabled = true;
+        selectAllStatementEnabled = false;
+        selectNotDeleteAllStatementEnabled = false;
+    }
+
+    public boolean isSelectNotDeleteByPrimaryKeyStatementEnabled() {
+        return selectNotDeleteByPrimaryKeyStatementEnabled;
+    }
+
+    public void setSelectNotDeleteByPrimaryKeyStatementEnabled(boolean selectNotDeleteByPrimaryKeyStatementEnabled)
+    {
+        this.selectNotDeleteByPrimaryKeyStatementEnabled = selectNotDeleteByPrimaryKeyStatementEnabled;
+    }
+
+    public boolean isSelectNotDeleteAllStatementEnabled() {
+        return selectNotDeleteAllStatementEnabled;
+    }
+
+    public void setSelectNotDeleteAllStatementEnabled(boolean selectNotDeleteAllStatementEnabled) {
+        this.selectNotDeleteAllStatementEnabled = selectNotDeleteAllStatementEnabled;
+    }
+
+    public boolean isSelectAllStatementEnabled() {
+        return selectAllStatementEnabled;
+    }
+
+    public void setSelectAllStatementEnabled(boolean selectAllStatementEnabled) {
+        this.selectAllStatementEnabled = selectAllStatementEnabled;
     }
 
     /**
@@ -448,7 +483,10 @@ public class TableConfiguration extends PropertyHolder {
                 || deleteByPrimaryKeyStatementEnabled
                 || countByExampleStatementEnabled
                 || updateByExampleStatementEnabled
-                || updateByExampleSelectiveStatementEnabled;
+                || updateByExampleSelectiveStatementEnabled
+                || selectAllStatementEnabled
+                || selectNotDeleteAllStatementEnabled
+                || selectNotDeleteByPrimaryKeyStatementEnabled;
     }
 
     /**

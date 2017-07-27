@@ -71,6 +71,10 @@ public class Context extends PropertyHolder {
     /** The java client generator configuration. */
     private JavaClientGeneratorConfiguration javaClientGeneratorConfiguration;
 
+    private JavaServiceGeneratorConfiguration javaServiceGeneratorConfiguration;
+
+    private JavaDomainGeneratorConfiguration JavaDomainGeneratorConfiguration;
+
     /** The table configurations. */
     private ArrayList<TableConfiguration> tableConfigurations;
 
@@ -127,6 +131,14 @@ public class Context extends PropertyHolder {
 
         tableConfigurations = new ArrayList<TableConfiguration>();
         pluginConfigurations = new ArrayList<PluginConfiguration>();
+    }
+
+    public JavaDomainGeneratorConfiguration getJavaDomainGeneratorConfiguration() {
+        return JavaDomainGeneratorConfiguration;
+    }
+
+    public void setJavaDomainGeneratorConfiguration(JavaDomainGeneratorConfiguration javaDomainGeneratorConfiguration) {
+        JavaDomainGeneratorConfiguration = javaDomainGeneratorConfiguration;
     }
 
     /**
@@ -284,12 +296,22 @@ public class Context extends PropertyHolder {
         this.id = id;
     }
 
+    public JavaServiceGeneratorConfiguration getJavaServiceGeneratorConfiguration() {
+        return javaServiceGeneratorConfiguration;
+    }
+
+    public void setJavaServiceGeneratorConfiguration(JavaServiceGeneratorConfiguration javaServiceGeneratorConfiguration) {
+        this.javaServiceGeneratorConfiguration = javaServiceGeneratorConfiguration;
+    }
+
     /**
      * Sets the java client generator configuration.
      *
      * @param javaClientGeneratorConfiguration
      *            the new java client generator configuration
      */
+
+
     public void setJavaClientGeneratorConfiguration(
             JavaClientGeneratorConfiguration javaClientGeneratorConfiguration) {
         this.javaClientGeneratorConfiguration = javaClientGeneratorConfiguration;
@@ -407,6 +429,11 @@ public class Context extends PropertyHolder {
 
         if (javaModelGeneratorConfiguration != null) {
             xmlElement.addElement(javaModelGeneratorConfiguration
+                    .toXmlElement());
+        }
+
+        if (javaBoGeneratorConfiguration != null) {
+            xmlElement.addElement(javaBoGeneratorConfiguration
                     .toXmlElement());
         }
 
@@ -741,6 +768,19 @@ public class Context extends PropertyHolder {
                         .contextGenerateAdditionalJavaFiles(introspectedTable));
                 generatedXmlFiles.addAll(pluginAggregator
                         .contextGenerateAdditionalXmlFiles(introspectedTable));
+            }
+        }
+        if (introspectedTables != null) {
+            for (IntrospectedTable introspectedTable : introspectedTables) {
+                callback.checkCancel();
+
+                introspectedTable.initializeBo();
+                introspectedTable.calculateGenerators(warnings, callback);
+                generatedJavaFiles.addAll(introspectedTable
+                        .getGeneratedJavaFiles());
+                generatedJavaFiles.addAll(pluginAggregator
+                        .contextGenerateAdditionalJavaFiles(introspectedTable));
+
             }
         }
 

@@ -25,15 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.GeneratedKey;
-import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
-import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
-import org.mybatis.generator.config.ModelType;
-import org.mybatis.generator.config.PropertyHolder;
-import org.mybatis.generator.config.PropertyRegistry;
-import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
-import org.mybatis.generator.config.TableConfiguration;
+import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.rules.ConditionalModelRules;
 import org.mybatis.generator.internal.rules.FlatModelRules;
 import org.mybatis.generator.internal.rules.HierarchicalModelRules;
@@ -127,7 +119,9 @@ public abstract class IntrospectedTable {
         
         /** The attr select all statement id. */
         ATTR_SELECT_ALL_STATEMENT_ID,
-        
+
+        /** The attr select not delete all statement id. */
+        ATTR_SELECT_NOT_DELETE_ALL_STATEMENT_ID,
         /** The attr select by example statement id. */
         ATTR_SELECT_BY_EXAMPLE_STATEMENT_ID,
         
@@ -136,7 +130,9 @@ public abstract class IntrospectedTable {
         
         /** The attr select by primary key statement id. */
         ATTR_SELECT_BY_PRIMARY_KEY_STATEMENT_ID,
-        
+
+        ATTR_SELECT_NOT_DELETE_BY_PRIMARY_KEY_STATEMENT_ID,
+
         /** The attr update by example statement id. */
         ATTR_UPDATE_BY_EXAMPLE_STATEMENT_ID,
         
@@ -752,7 +748,23 @@ public abstract class IntrospectedTable {
         attributes.put(name, value);
     }
 
+    public void initializeBo() {
+        calculateBoAttributes();
+        if (tableConfiguration.getModelType() == ModelType.HIERARCHICAL) {
+            rules = new HierarchicalModelRules(this);
+        } else if (tableConfiguration.getModelType() == ModelType.FLAT) {
+            rules = new FlatModelRules(this);
+        } else {
+            rules = new ConditionalModelRules(this);
+        }
+
+        context.getPlugins().initialized(this);
+    }
     /**
+     * 这个地方困扰了我好几天了，导致我新加的Bo信息一直不对，直到今天我才发现问题的症结所在是因为后面的
+     * calculateModelAttributes()方法将calculateBoAttributes()的结果覆盖掉了,最后只能将bo的单独
+     * 拿出来
+     *
      * Initialize.
      */
     public void initialize() {
@@ -792,9 +804,11 @@ public abstract class IntrospectedTable {
         setInsertStatementId("insert"); //$NON-NLS-1$
         setInsertSelectiveStatementId("insertSelective"); //$NON-NLS-1$
         setSelectAllStatementId("selectAll"); //$NON-NLS-1$
+        setSelectNotDeleteAllStatementId("selectNotDeleteAll"); //$NON-NLS-1$
         setSelectByExampleStatementId("selectByExample"); //$NON-NLS-1$
         setSelectByExampleWithBLOBsStatementId("selectByExampleWithBLOBs"); //$NON-NLS-1$
         setSelectByPrimaryKeyStatementId("selectByPrimaryKey"); //$NON-NLS-1$
+        setSelectNotDeleteByPrimaryKeyStatementId("selectNotDeleteByPrimaryKey"); //$NON-NLS-1$
         setUpdateByExampleStatementId("updateByExample"); //$NON-NLS-1$
         setUpdateByExampleSelectiveStatementId("updateByExampleSelective"); //$NON-NLS-1$
         setUpdateByExampleWithBLOBsStatementId("updateByExampleWithBLOBs"); //$NON-NLS-1$
@@ -958,6 +972,10 @@ public abstract class IntrospectedTable {
         internalAttributes.put(
                 InternalAttribute.ATTR_SELECT_BY_PRIMARY_KEY_STATEMENT_ID, s);
     }
+    public void setSelectNotDeleteByPrimaryKeyStatementId(String s) {
+        internalAttributes.put(
+                InternalAttribute.ATTR_SELECT_NOT_DELETE_BY_PRIMARY_KEY_STATEMENT_ID, s);
+    }
 
     /**
      * Sets the select by example with blo bs statement id.
@@ -981,6 +999,11 @@ public abstract class IntrospectedTable {
     public void setSelectAllStatementId(String s) {
         internalAttributes.put(
                 InternalAttribute.ATTR_SELECT_ALL_STATEMENT_ID, s);
+    }
+
+    public void setSelectNotDeleteAllStatementId(String s) {
+        internalAttributes.put(
+                InternalAttribute.ATTR_SELECT_NOT_DELETE_ALL_STATEMENT_ID, s);
     }
 
     /**
@@ -1178,6 +1201,10 @@ public abstract class IntrospectedTable {
                 .get(InternalAttribute.ATTR_SELECT_BY_PRIMARY_KEY_STATEMENT_ID);
     }
 
+    public String getSelectNotDeleteByPrimaryKeyStatementId() {
+        return internalAttributes
+                .get(InternalAttribute.ATTR_SELECT_NOT_DELETE_BY_PRIMARY_KEY_STATEMENT_ID);
+    }
     /**
      * Gets the select by example with blo bs statement id.
      *
@@ -1198,6 +1225,10 @@ public abstract class IntrospectedTable {
                 .get(InternalAttribute.ATTR_SELECT_ALL_STATEMENT_ID);
     }
 
+    public String getSelectNotDeleteAllStatementId() {
+        return internalAttributes
+                .get(InternalAttribute.ATTR_SELECT_NOT_DELETE_ALL_STATEMENT_ID);
+    }
     /**
      * Gets the select by example statement id.
      *
@@ -1358,6 +1389,41 @@ public abstract class IntrospectedTable {
         setMyBatis3SqlProviderType(sb.toString());
     }
 
+    protected String calculateJavaBoPackage() {
+        JavaBoGeneratorConfiguration config = context
+                .getJavaBoGeneratorConfiguration();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(config.getTargetPackage());
+        sb.append(fullyQualifiedTable.getSubPackageForBo(isSubPackagesEnabled(config)));
+
+        return sb.toString();
+    }
+
+    protected void calculateBoAttributes() {
+        String pakkage = calculateJavaBoPackage();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(pakkage);
+        sb.append('.');
+        sb.append(fullyQualifiedTable.getBoObjectName());
+        sb.append("Key"); //$NON-NLS-1$
+        setPrimaryKeyType(sb.toString());
+
+        sb.setLength(0);
+        sb.append(pakkage);
+        sb.append('.');
+        sb.append(fullyQualifiedTable.getBoObjectName());
+        setBaseRecordType(sb.toString());
+
+        sb.setLength(0);
+        sb.append(pakkage);
+        sb.append('.');
+        sb.append(fullyQualifiedTable.getBoObjectName());
+        sb.append("WithBLOBs"); //$NON-NLS-1$
+        setRecordWithBLOBsType(sb.toString());
+
+    }
     /**
      * Calculate java model package.
      *

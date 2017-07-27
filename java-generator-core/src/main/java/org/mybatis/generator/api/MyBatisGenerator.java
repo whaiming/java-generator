@@ -30,9 +30,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.mybatis.generator.codegen.RootClassInfo;
-import org.mybatis.generator.config.Configuration;
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.MergeConstants;
+import org.mybatis.generator.codegen.freemarker.JavaDomainGenerator;
+import org.mybatis.generator.codegen.freemarker.JavaServiceGenerator;
+import org.mybatis.generator.codegen.freemarker.TemplateEntity.DomainTemplateEntity;
+import org.mybatis.generator.codegen.freemarker.TemplateEntity.ServiceTemplateEntity;
+import org.mybatis.generator.config.*;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.ShellException;
 import org.mybatis.generator.internal.*;
@@ -218,6 +220,14 @@ public class MyBatisGenerator {
         if (callback == null) {
             callback = new NullProgressCallback();
         }
+        /**
+         * 如果JavaServiceGeneratorConfiguration存在则调用相关方法
+         */
+        if (configuration.getContexts().get(0).getJavaServiceGeneratorConfiguration()!=null)
+        JavaServiceGenerator.addJavaServiceGenerator(assignmentServiceTemplateEntity());
+
+        if (configuration.getContexts().get(0).getJavaDomainGeneratorConfiguration()!=null)
+        JavaDomainGenerator.addJavaDomainGenerator(assignmentDomainTemplateEntity());
 
         generatedJavaFiles.clear();
         generatedXmlFiles.clear();
@@ -299,7 +309,6 @@ public class MyBatisGenerator {
             File directory = shellCallback.getDirectory(gjf
                     .getTargetProject(), gjf.getTargetPackage());
             targetFile = new File(directory, gjf.getFileName());
-//            JavaFileMergerJaxp.getMergedSource(gjf,targetFile);
             if (targetFile.exists()) {
                 if (shellCallback.isMergeSupported()) {
 
@@ -451,4 +460,69 @@ public class MyBatisGenerator {
     public List<GeneratedXmlFile> getGeneratedXmlFiles() {
         return generatedXmlFiles;
     }
+
+    public List<ServiceTemplateEntity> assignmentServiceTemplateEntity(){
+        List<Context> contexts = configuration.getContexts();
+        List<ServiceTemplateEntity> serviceTemplateEntities = new ArrayList<>();
+        for (Context c:contexts){
+            JavaServiceGeneratorConfiguration jgc = c.getJavaServiceGeneratorConfiguration();
+
+            List<TableConfiguration> tableConfigurations = c.getTableConfigurations();
+            for (TableConfiguration t:tableConfigurations){
+                ServiceTemplateEntity serviceTemplateEntity = new ServiceTemplateEntity();
+                serviceTemplateEntity.setClassName(t.getDomainObjectName()+"Service");
+                String projectTargetPackage = jgc.getTargetProject()+"/"+jgc.getTargetPackage().replaceAll("\\.","/")+"/";
+                serviceTemplateEntity.setProjectTargetPackage(projectTargetPackage);
+                serviceTemplateEntity.setTemplatePackage(jgc.getTargetPackage());
+                serviceTemplateEntity.setMapperType(t.getDomainObjectName()+"Mapper");
+                serviceTemplateEntity.setMapperName(t.getDomainObjectName().toLowerCase()+"Mapper");
+                serviceTemplateEntity.setModelClazz(t.getDomainObjectName());
+                serviceTemplateEntity.setMapperPackage(c.getJavaClientGeneratorConfiguration().getTargetPackage()+"."+t.getDomainObjectName()+"Mapper");
+                serviceTemplateEntity.setModelPackage(c.getJavaModelGeneratorConfiguration().getTargetPackage()+"."+t.getDomainObjectName());
+                serviceTemplateEntities.add(serviceTemplateEntity);
+            }
+        }
+        return serviceTemplateEntities;
+    }
+
+    public List<DomainTemplateEntity> assignmentDomainTemplateEntity(){
+        List<Context> contexts = configuration.getContexts();
+        List<DomainTemplateEntity> domainTemplateEntityList = new ArrayList<>();
+        for (Context c: contexts){
+            JavaDomainGeneratorConfiguration jdc = c.getJavaDomainGeneratorConfiguration();
+            List<TableConfiguration> tableConfigurations = c.getTableConfigurations();
+            for (TableConfiguration t:tableConfigurations){
+                DomainTemplateEntity domainTemplateEntity = new DomainTemplateEntity();
+                DomainTemplateEntity.DomainTemplate domainTemplate = new DomainTemplateEntity.DomainTemplate();
+                DomainTemplateEntity.NativeDomainTemplate nativeDomainTemplate = new DomainTemplateEntity.NativeDomainTemplate();
+                domainTemplate.setDomainPackage(jdc.getTargetPackage());
+                domainTemplate.setBoPackage(c.getJavaBoGeneratorConfiguration().getTargetPackage()+"."+t.getBoObjectName());
+                domainTemplate.setBoType(t.getBoObjectName());
+                domainTemplate.setDomainInterface(t.getDomainObjectName()+"Domain");
+                domainTemplate.setProjectTargetPackage(jdc.getTargetProject()+"/"+jdc.getTargetPackage().replaceAll("\\.","/")+"/");
+                nativeDomainTemplate.setNativeDomainPackage(jdc.getTargetPackage());
+                nativeDomainTemplate.setBoPackage(c.getJavaBoGeneratorConfiguration().getTargetPackage()+"."+t.getBoObjectName());
+                nativeDomainTemplate.setModelPackage(c.getJavaModelGeneratorConfiguration().getTargetPackage()+"."+t.getDomainObjectName());
+                nativeDomainTemplate.setBoType(t.getBoObjectName());
+                nativeDomainTemplate.setDomainInterface(t.getDomainObjectName()+"Domain");
+                String str = t.getDomainObjectName()+"Domain";
+                str = Character.toLowerCase(str.charAt(0)) + str.substring(1);
+                nativeDomainTemplate.setDomainName(str);
+                nativeDomainTemplate.setModelClazz(t.getDomainObjectName());
+                nativeDomainTemplate.setModelServiceClazz(t.getDomainObjectName()+"Service");
+                str = t.getDomainObjectName()+"Service";
+                str = Character.toLowerCase(str.charAt(0)) + str.substring(1);
+                nativeDomainTemplate.setModelServiceName(str);
+                nativeDomainTemplate.setProjectTargetPackage(jdc.getTargetProject()+"/"+jdc.getTargetPackage().replaceAll("\\.","/")+"/");
+                nativeDomainTemplate.setModelServicePackage(c.getJavaServiceGeneratorConfiguration().getTargetPackage()+"."+t.getDomainObjectName()+"Service");
+                nativeDomainTemplate.setNativeDomainClazz(t.getDomainObjectName()+"NativeDomain");
+                nativeDomainTemplate.setDomainPackage(domainTemplate.getDomainPackage()+"."+domainTemplate.getDomainInterface());
+                domainTemplateEntity.setDomainTemplate(domainTemplate);
+                domainTemplateEntity.setNativeDomainTemplate(nativeDomainTemplate);
+                domainTemplateEntityList.add(domainTemplateEntity);
+            }
+        }
+        return domainTemplateEntityList;
+    }
+
 }

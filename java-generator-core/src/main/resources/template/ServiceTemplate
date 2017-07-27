@@ -1,0 +1,42 @@
+package ${templatePackage};
+
+import java.util.List;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
+import ${modelPackage};
+import ${mapperPackage};
+
+/**
+*
+* Created by CodeGenerator
+*/
+
+@Service
+public class ${className} {
+    @Resource
+    private ${mapperType} ${mapperName};
+
+    public void save(${modelClazz} modelName){
+        this.${mapperName}.insertSelective(modelName);
+    }
+
+    public void deleteByPrimaryKey(Integer primaryKey){
+        this.${mapperName}.deleteByPrimaryKey(primaryKey);
+    }
+
+    public ${modelClazz} getByPrimaryKey(Integer primaryKey){
+        return this.${mapperName}.selectByPrimaryKey(primaryKey);
+    }
+
+    public ${modelClazz} getNotDeleteByPrimaryKey(Integer primaryKey){
+        return this.${mapperName}.selectNotDeleteByPrimaryKey(primaryKey);
+    }
+
+    public List<${modelClazz}> findAll(){
+        return this.${mapperName}.selectAll();
+    }
+
+    public List<${modelClazz}> findNotDeleteAll(){
+        return this.${mapperName}.selectNotDeleteAll();
+    }
+}

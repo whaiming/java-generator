@@ -704,6 +704,9 @@ public interface Plugin {
     boolean clientSelectByPrimaryKeyMethodGenerated(Method method,
             Interface interfaze, IntrospectedTable introspectedTable);
 
+   boolean clientSelectNotDeleteByPrimaryKeyMethodGenerated(Method method,
+                                                   Interface interfaze, IntrospectedTable introspectedTable);
+
     /**
      * This method is called when the updateByExampleSelective method has been
      * generated in the client interface.
@@ -1211,6 +1214,9 @@ public interface Plugin {
      */
     boolean sqlMapSelectAllElementGenerated(XmlElement element,
             IntrospectedTable introspectedTable);
+
+   boolean sqlMapSelectNotDeleteAllElementGenerated( XmlElement element,
+                                                     IntrospectedTable introspectedTable);
 
     /**
      * This method is called when the selectByPrimaryKey element is generated.

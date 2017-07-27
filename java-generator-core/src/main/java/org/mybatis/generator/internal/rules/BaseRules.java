@@ -325,6 +325,19 @@ public abstract class BaseRules implements Rules {
         return rc;
     }
 
+    public boolean generateSelectNotDeleteByPrimaryKey() {
+        if (isModelOnly) {
+            return false;
+        }
+
+        boolean rc = tableConfiguration.isSelectNotDeleteByPrimaryKeyStatementEnabled()
+                && introspectedTable.hasPrimaryKeyColumns()
+                && (introspectedTable.hasBaseColumns() || introspectedTable
+                .hasBLOBColumns());
+
+        return rc;
+    }
+
     /**
      * Implements the rule for generating the select by example without BLOBs
      * SQL Map element and DAO method. If the selectByExample statement is
@@ -355,6 +368,30 @@ public abstract class BaseRules implements Rules {
         
         boolean rc = tableConfiguration.isSelectByExampleStatementEnabled()
                 && introspectedTable.hasBLOBColumns();
+
+        return rc;
+    }
+
+
+    public boolean generateSelectAll() {
+        if (isModelOnly) {
+            return false;
+        }
+
+        boolean rc = tableConfiguration.isSelectAllStatementEnabled();
+
+
+        return rc;
+    }
+
+
+    public boolean generateSelectNotDeleteAll() {
+        if (isModelOnly) {
+            return false;
+        }
+
+        boolean rc = tableConfiguration.isSelectNotDeleteAllStatementEnabled();
+
 
         return rc;
     }

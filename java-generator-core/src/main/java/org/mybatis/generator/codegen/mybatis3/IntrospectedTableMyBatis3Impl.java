@@ -269,20 +269,12 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
             List<CompilationUnit> compilationUnits = javaGenerator
                     .getCompilationUnits();
             for (CompilationUnit compilationUnit : compilationUnits) {
-                String baseShortName="Bo" ;
-                for (TableConfiguration t: context.getTableConfigurations()){
-                    baseShortName = t.getBoObjectName();
-                }
                 GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit,
-                        context.getJavaBoGeneratorConfiguration()
-                                .getTargetPackage(),//此处给GeneratedJavaFile增加了一种构造方法，并做了相关修改
-                        baseShortName,
-                        context.getJavaBoGeneratorConfiguration()
+                        context.getJavaModelGeneratorConfiguration()
                                 .getTargetProject(),
                         context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
                         context.getJavaFormatter());
                 answer.add(gjf);
-
             }
         }
 

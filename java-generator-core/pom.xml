@@ -116,6 +116,16 @@
             <artifactId>ibatis-core</artifactId>
             <version>3.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.26-incubating</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.3.10.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <description>Java Generator - a code generator for MyBatis and iBatis.</description>

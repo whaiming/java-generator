@@ -174,6 +174,8 @@ public interface Rules {
      */
     boolean generateSelectByPrimaryKey();
 
+    boolean generateSelectNotDeleteByPrimaryKey() ;
+
     /**
      * Implements the rule for generating the select by example without BLOBs
      * SQL Map element and DAO method. If the selectByExample statement is
@@ -235,6 +237,10 @@ public interface Rules {
      * @return true if the record with BLOBs class should be generated
      */
     boolean generateRecordWithBLOBsClass();
+
+    boolean generateSelectAll();
+
+    boolean generateSelectNotDeleteAll();
     
     /**
      * Implements the rule for generating a Java client.  This rule is

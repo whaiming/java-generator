@@ -74,9 +74,8 @@ public class EqualsHashCodePlugin extends PluginAdapter {
         } else {
             columns = introspectedTable.getAllColumns();
         }
-
-        generateEquals(topLevelClass, columns, introspectedTable);
-        generateHashCode(topLevelClass, columns, introspectedTable);
+            generateEquals(topLevelClass, columns, introspectedTable);
+            generateHashCode(topLevelClass, columns, introspectedTable);
 
         return true;
     }

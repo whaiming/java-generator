@@ -51,7 +51,7 @@
   tables.
 -->
 <!ELEMENT context (property*, plugin*, commentGenerator?, (connectionFactory | jdbcConnection), javaTypeResolver?,
-        javaBoGenerator?,javaModelGenerator, sqlMapGenerator?, javaClientGenerator?, table+)>
+        javaBoGenerator?,javaModelGenerator, sqlMapGenerator?, javaClientGenerator?,javaServiceGenerator?,javaDomainGenerator?, table+)>
 <!ATTLIST context id ID #REQUIRED
   defaultModelType CDATA #IMPLIED
   targetRuntime CDATA #IMPLIED
@@ -151,6 +151,16 @@
   targetProject CDATA #REQUIRED
   implementationPackage CDATA #IMPLIED>
 
+<!ELEMENT javaServiceGenerator (property*)>
+<!ATTLIST javaServiceGenerator
+        targetPackage CDATA #REQUIRED
+        targetProject CDATA #REQUIRED>
+
+<!ELEMENT javaDomainGenerator (property*)>
+<!ATTLIST javaDomainGenerator
+        targetPackage CDATA #REQUIRED
+        targetProject CDATA #REQUIRED>
+
 <!--
   The table element is used to specify a database table that will be the source information
   for a set of generated objects.
@@ -168,6 +178,7 @@
   enableInsert CDATA #IMPLIED
         enableInsertSelective CDATA #IMPLIED
   enableSelectByPrimaryKey CDATA #IMPLIED
+    enableSelectNotDeleteByPrimaryKey CDATA #IMPLIED
   enableSelectByExample CDATA #IMPLIED
   enableUpdateByPrimaryKey CDATA #IMPLIED
   enableDeleteByPrimaryKey CDATA #IMPLIED
@@ -177,6 +188,8 @@
         enableUpdateByExampleSelective CDATA #IMPLIED
   selectByPrimaryKeyQueryId CDATA #IMPLIED
   selectByExampleQueryId CDATA #IMPLIED
+        enableSelectAll CDATA #IMPLIED
+        enableSelectNotDeleteAll CDATA #IMPLIED
   modelType CDATA #IMPLIED
   escapeWildcards CDATA #IMPLIED
   delimitIdentifiers CDATA #IMPLIED
