@@ -319,11 +319,6 @@ public class MyBatisGenerator {
                             gjf.getFileEncoding());
 
                 } else if (shellCallback.isOverwriteEnabled()) {
-                    JavaFileMergerJaxp.mergeJavaFile(gjf
-                                    .getFormattedContent(), targetFile
-                                    .getAbsolutePath(),
-                            MergeConstants.OLD_ELEMENT_TAGS,
-                            gjf.getFileEncoding());
                     source = gjf.getFormattedContent();
                     warnings.add(getString("Warning.11", //$NON-NLS-1$
                             targetFile.getAbsolutePath()));
