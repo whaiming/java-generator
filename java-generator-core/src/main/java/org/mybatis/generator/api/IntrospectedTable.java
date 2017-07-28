@@ -1390,6 +1390,7 @@ public abstract class IntrospectedTable {
     }
 
     protected String calculateJavaBoPackage() {
+
         JavaBoGeneratorConfiguration config = context
                 .getJavaBoGeneratorConfiguration();
 

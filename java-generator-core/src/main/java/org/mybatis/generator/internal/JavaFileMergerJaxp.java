@@ -18,6 +18,17 @@ import java.io.*;
  * Created by whm on 2017/7/24.
  */
 public class JavaFileMergerJaxp {
+    public static String mergeJavaFile(String newFileSource,
+                                String existingFileFullPath, String[] javadocTags, String fileEncoding)
+            throws ShellException {
+        System.out.println(existingFileFullPath);
+//        System.out.println(newFileSource);
+        return null;
+    }
+
+
+
+
     public static void getMergedSource(GeneratedJavaFile generatedXmlFile,
                                        File existingFile) throws ShellException {
         BufferedReader bs  = null;

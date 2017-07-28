@@ -231,11 +231,11 @@ public class Context extends PropertyHolder {
             connectionFactoryConfiguration.validate(errors);
         }
 
-        if (javaBoGeneratorConfiguration == null) {
-            errors.add(getString("ValidationError.28", id)); //$NON-NLS-1$
-        } else {
-            javaBoGeneratorConfiguration.validate(errors, id);
-        }
+//        if (javaBoGeneratorConfiguration == null) {
+//            errors.add(getString("ValidationError.28", id)); //$NON-NLS-1$
+//        } else {
+//            javaBoGeneratorConfiguration.validate(errors, id);
+//        }
 
         if (javaModelGeneratorConfiguration == null) {
             errors.add(getString("ValidationError.8", id)); //$NON-NLS-1$
@@ -773,8 +773,9 @@ public class Context extends PropertyHolder {
         if (introspectedTables != null) {
             for (IntrospectedTable introspectedTable : introspectedTables) {
                 callback.checkCancel();
-
-                introspectedTable.initializeBo();
+                if (this.getJavaBoGeneratorConfiguration()!=null) {
+                    introspectedTable.initializeBo();
+                }
                 introspectedTable.calculateGenerators(warnings, callback);
                 generatedJavaFiles.addAll(introspectedTable
                         .getGeneratedJavaFiles());

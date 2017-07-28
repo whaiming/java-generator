@@ -5,12 +5,12 @@ package org.mybatis.generator.codegen.freemarker.TemplateEntity;
  */
 public class ServiceTemplateEntity {
     private String templatePackage;//包名
-    private String modelPackage;//所需要导入的model包
+    private String boPackage;//所需要导入的model包
     private String mapperPackage;//所需要导入的mapper包
     private String className;//生成的Service类名
     private String mapperType;//对应的Mapper类
     private String mapperName;//Mapper类的实例对象名
-    private String modelClazz;//对应的model类
+    private String boClazz;//对应的model类
     private String projectTargetPackage;//Service生成的目标工程包
 
     public String getTemplatePackage() {
@@ -21,12 +21,12 @@ public class ServiceTemplateEntity {
         this.templatePackage = templatePackage;
     }
 
-    public String getModelPackage() {
-        return modelPackage;
+    public String getBoPackage() {
+        return boPackage;
     }
 
-    public void setModelPackage(String modelPackage) {
-        this.modelPackage = modelPackage;
+    public void setBoPackage(String boPackage) {
+        this.boPackage = boPackage;
     }
 
     public String getMapperPackage() {
@@ -61,12 +61,12 @@ public class ServiceTemplateEntity {
         this.mapperName = mapperName;
     }
 
-    public String getModelClazz() {
-        return modelClazz;
+    public String getBoClazz() {
+        return boClazz;
     }
 
-    public void setModelClazz(String modelClazz) {
-        this.modelClazz = modelClazz;
+    public void setBoClazz(String boClazz) {
+        this.boClazz = boClazz;
     }
 
     public String getProjectTargetPackage() {

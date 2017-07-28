@@ -126,6 +126,13 @@
             <artifactId>spring-context</artifactId>
             <version>4.3.10.RELEASE</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>4.3.10.RELEASE</version>
+        </dependency>
+
     </dependencies>
 
     <description>Java Generator - a code generator for MyBatis and iBatis.</description>

@@ -317,7 +317,13 @@ public class MyBatisGenerator {
                             .getAbsolutePath(),
                             MergeConstants.OLD_ELEMENT_TAGS,
                             gjf.getFileEncoding());
+
                 } else if (shellCallback.isOverwriteEnabled()) {
+                    JavaFileMergerJaxp.mergeJavaFile(gjf
+                                    .getFormattedContent(), targetFile
+                                    .getAbsolutePath(),
+                            MergeConstants.OLD_ELEMENT_TAGS,
+                            gjf.getFileEncoding());
                     source = gjf.getFormattedContent();
                     warnings.add(getString("Warning.11", //$NON-NLS-1$
                             targetFile.getAbsolutePath()));
@@ -476,9 +482,9 @@ public class MyBatisGenerator {
                 serviceTemplateEntity.setTemplatePackage(jgc.getTargetPackage());
                 serviceTemplateEntity.setMapperType(t.getDomainObjectName()+"Mapper");
                 serviceTemplateEntity.setMapperName(t.getDomainObjectName().toLowerCase()+"Mapper");
-                serviceTemplateEntity.setModelClazz(t.getDomainObjectName());
+                serviceTemplateEntity.setBoClazz(t.getBoObjectName());
                 serviceTemplateEntity.setMapperPackage(c.getJavaClientGeneratorConfiguration().getTargetPackage()+"."+t.getDomainObjectName()+"Mapper");
-                serviceTemplateEntity.setModelPackage(c.getJavaModelGeneratorConfiguration().getTargetPackage()+"."+t.getDomainObjectName());
+                serviceTemplateEntity.setBoPackage(c.getJavaBoGeneratorConfiguration().getTargetPackage()+"."+t.getBoObjectName());
                 serviceTemplateEntities.add(serviceTemplateEntity);
             }
         }

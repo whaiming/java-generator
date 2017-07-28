@@ -70,14 +70,14 @@ public class JavaBoGeneratorConfiguration extends PropertyHolder {
         return answer;
     }
 
-    public void validate(List<String> errors, String contextId) {
-        if (!stringHasValue(targetProject)) {
-            errors.add(getString("ValidationError.0", contextId)); //$NON-NLS-1$
-        }
-
-        if (!stringHasValue(targetPackage)) {
-            errors.add(getString("ValidationError.12", //$NON-NLS-1$
-                    "JavaBoGenerator", contextId)); //$NON-NLS-1$
-        }
-    }
+//    public void validate(List<String> errors, String contextId) {
+//        if (!stringHasValue(targetProject)) {
+//            errors.add(getString("ValidationError.0", contextId)); //$NON-NLS-1$
+//        }
+//
+//        if (!stringHasValue(targetPackage)) {
+//            errors.add(getString("ValidationError.12", //$NON-NLS-1$
+//                    "JavaBoGenerator", contextId)); //$NON-NLS-1$
+//        }
+//    }
 }
