@@ -648,4 +648,8 @@ public class FullyQualifiedJavaType implements
     public List<FullyQualifiedJavaType> getTypeArguments() {
         return typeArguments;
     }
+
+    public void setBaseQualifiedName(String baseQualifiedName) {
+        this.baseQualifiedName = baseQualifiedName;
+    }
 }

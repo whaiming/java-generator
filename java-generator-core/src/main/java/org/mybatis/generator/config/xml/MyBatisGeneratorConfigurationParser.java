@@ -185,7 +185,11 @@ public class MyBatisGeneratorConfigurationParser {
                 parseSqlMapGenerator(context, childNode);
             } else if ("javaClientGenerator".equals(childNode.getNodeName())) { //$NON-NLS-1$
                 parseJavaClientGenerator(context, childNode);
-            } else if ("table".equals(childNode.getNodeName())) { //$NON-NLS-1$
+            } else if ("javaServiceGenerator".equals(childNode.getNodeName())) { //$NON-NLS-1$
+                parseJavaServiceGenerator(context, childNode);
+            }else if ("javaDomainGenerator".equals(childNode.getNodeName())) { //$NON-NLS-1$
+                parseJavaDomainGenerator(context, childNode);
+            }else if ("table".equals(childNode.getNodeName())) { //$NON-NLS-1$
                 parseTable(context, childNode);
             }
         }
@@ -234,12 +238,20 @@ public class MyBatisGeneratorConfigurationParser {
         String enableInsertSelective = attributes.getProperty("enableInsertSelective"); //$NON-NLS-1$
         String enableSelectByPrimaryKey = attributes
                 .getProperty("enableSelectByPrimaryKey"); //$NON-NLS-1$
+        String enableSelectNotDeleteByPrimaryKey = attributes
+                .getProperty("enableSelectNotDeleteByPrimaryKey"); //$NON-NLS-1$
         String enableSelectByExample = attributes
                 .getProperty("enableSelectByExample"); //$NON-NLS-1$
         String enableUpdateByPrimaryKey = attributes
                 .getProperty("enableUpdateByPrimaryKey"); //$NON-NLS-1$
+        String enableSelectAll = attributes
+                .getProperty("enableSelectAll");
+        String enableSelectNotDeleteAll = attributes
+                .getProperty("enableSelectNotDeleteAll");
         String enableDeleteByPrimaryKey = attributes
                 .getProperty("enableDeleteByPrimaryKey"); //$NON-NLS-1$
+        String enableSelcetNotDeleteByPrimaryKey = attributes
+                .getProperty("enableSelectNotDeleteByPrimaryKey");
         String enableDeleteByExample = attributes
                 .getProperty("enableDeleteByExample"); //$NON-NLS-1$
         String enableCountByExample = attributes
@@ -298,12 +310,27 @@ public class MyBatisGeneratorConfigurationParser {
             tc.setSelectByPrimaryKeyStatementEnabled(
                     isTrue(enableSelectByPrimaryKey));
         }
+        if (stringHasValue(enableSelectNotDeleteByPrimaryKey)) {
+            tc.setSelectByPrimaryKeyStatementEnabled(
+                    isTrue(enableSelectNotDeleteByPrimaryKey));
+        }
 
         if (stringHasValue(enableSelectByExample)) {
             tc.setSelectByExampleStatementEnabled(
                     isTrue(enableSelectByExample));
         }
 
+        if (stringHasValue(enableSelectAll)) {
+            tc.setSelectAllStatementEnabled(
+                    isTrue(enableSelectAll));
+        }
+        if (stringHasValue(enableSelectNotDeleteAll)) {
+            tc.setSelectNotDeleteAllStatementEnabled(
+                    isTrue(enableSelectNotDeleteAll));
+        }
+        if (stringHasValue(enableSelcetNotDeleteByPrimaryKey)) {
+            tc.setSelectNotDeleteByPrimaryKeyStatementEnabled(isTrue(enableSelcetNotDeleteByPrimaryKey));
+        }
         if (stringHasValue(enableUpdateByPrimaryKey)) {
             tc.setUpdateByPrimaryKeyStatementEnabled(
                     isTrue(enableUpdateByPrimaryKey));
@@ -657,6 +684,56 @@ public class MyBatisGeneratorConfigurationParser {
 
             if ("property".equals(childNode.getNodeName())) { //$NON-NLS-1$
                 parseProperty(javaClientGeneratorConfiguration, childNode);
+            }
+        }
+    }
+
+    private void parseJavaDomainGenerator(Context context, Node node) {
+        JavaDomainGeneratorConfiguration javaDomainGeneratorConfiguration = new JavaDomainGeneratorConfiguration();
+        context.setJavaDomainGeneratorConfiguration(javaDomainGeneratorConfiguration);
+
+        Properties attributes = parseAttributes(node);
+        String type = attributes.getProperty("type"); //$NON-NLS-1$
+        String domainTargetPackage = attributes.getProperty("targetPackage"); //$NON-NLS-1$
+        String domainTargetProject = attributes.getProperty("targetProject"); //$NON-NLS-1$
+
+        javaDomainGeneratorConfiguration.setTargetPackage(domainTargetPackage);
+        javaDomainGeneratorConfiguration.setTargetProject(domainTargetProject);
+        NodeList nodeList = node.getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node childNode = nodeList.item(i);
+
+            if (childNode.getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+
+            if ("property".equals(childNode.getNodeName())) { //$NON-NLS-1$
+                parseProperty(javaDomainGeneratorConfiguration, childNode);
+            }
+        }
+    }
+    private void parseJavaServiceGenerator(Context context, Node node) {
+        JavaServiceGeneratorConfiguration javaServiceGeneratorConfiguration = new JavaServiceGeneratorConfiguration();
+        context.setJavaServiceGeneratorConfiguration(javaServiceGeneratorConfiguration);
+
+        Properties attributes = parseAttributes(node);
+        String type = attributes.getProperty("type"); //$NON-NLS-1$
+        String targetPackage = attributes.getProperty("targetPackage"); //$NON-NLS-1$
+        String targetProject = attributes.getProperty("targetProject"); //$NON-NLS-1$
+
+        javaServiceGeneratorConfiguration.setTargetPackage(targetPackage);
+        javaServiceGeneratorConfiguration.setTargetProject(targetProject);
+
+        NodeList nodeList = node.getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node childNode = nodeList.item(i);
+
+            if (childNode.getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+
+            if ("property".equals(childNode.getNodeName())) { //$NON-NLS-1$
+                parseProperty(javaServiceGeneratorConfiguration, childNode);
             }
         }
     }

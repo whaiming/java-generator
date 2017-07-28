@@ -24,6 +24,9 @@ import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 import org.mybatis.generator.config.Context;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * The Class FullyQualifiedTable.
  *
@@ -48,6 +51,9 @@ public class FullyQualifiedTable {
 
     /** The runtime table name. */
     private String runtimeTableName;
+
+    private String boObjectName;
+    private String boObjectSubPackage;
 
     /** The domain object name. */
     private String domainObjectName;
@@ -107,6 +113,7 @@ public class FullyQualifiedTable {
      */
     public FullyQualifiedTable(String introspectedCatalog,
             String introspectedSchema, String introspectedTableName,
+            String boObjectName,
             String domainObjectName, String alias,
             boolean ignoreQualifiersAtRuntime, String runtimeCatalog,
             String runtimeSchema, String runtimeTableName,
@@ -119,7 +126,15 @@ public class FullyQualifiedTable {
         this.runtimeCatalog = runtimeCatalog;
         this.runtimeSchema = runtimeSchema;
         this.runtimeTableName = runtimeTableName;
-        
+        if (stringHasValue(boObjectName)) {
+            int index = boObjectName.lastIndexOf('.');
+            if (index == -1) {
+                this.boObjectName = boObjectName;
+            } else {
+                this.boObjectName = boObjectName.substring(index + 1);
+                this.boObjectSubPackage = boObjectName.substring(0, index);
+            }
+        }
         if (stringHasValue(domainObjectName)) {
             int index = domainObjectName.lastIndexOf('.');
             if (index == -1) {
@@ -250,6 +265,15 @@ public class FullyQualifiedTable {
                         localTable, '_');
     }
 
+    public String getBoObjectName() {
+        if (stringHasValue(boObjectName)) {
+            return boObjectName;
+        } else if (stringHasValue(runtimeTableName)) {
+            return getCamelCaseString(runtimeTableName, true);
+        } else {
+            return getCamelCaseString(introspectedTableName, true);
+        }
+    }
     /**
      * Gets the domain object name.
      *
@@ -356,6 +380,17 @@ public class FullyQualifiedTable {
         return sb.toString();
     }
 
+    public String getSubPackageForBo(boolean isSubPackagesEnabled) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getSubPackageForClientOrSqlMap(isSubPackagesEnabled));
+
+        if (stringHasValue(boObjectSubPackage)) {
+            sb.append('.');
+            sb.append(boObjectSubPackage);
+        }
+
+        return sb.toString();
+    }
     /**
      * Calculates a Java package fragment based on the table catalog and schema.
      * If qualifiers are ignored, then this method will return an empty string.
@@ -379,6 +414,7 @@ public class FullyQualifiedTable {
 
         return sb.toString();
     }
+
 
     /**
      * Adds the delimiters.

@@ -1,0 +1,17 @@
+package ${domainPackage};
+
+import ${boPackage};
+
+/**
+*
+* Created by CodeGenerator
+*/
+public interface ${domainInterface} {
+    /**
+    * 通过ID获取对象
+    *
+    * @param id 账号ID
+    * @return ${boType}
+    */
+    ${boType} get(Integer id);
+}

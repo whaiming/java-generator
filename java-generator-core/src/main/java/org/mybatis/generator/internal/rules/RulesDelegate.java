@@ -63,6 +63,13 @@ public class RulesDelegate implements Rules {
     public RulesDelegate(Rules rules) {
         this.rules = rules;
     }
+    @Override
+    public boolean generateSelectAll() {
+        return rules.generateSelectAll();
+    }
+    public boolean generateSelectNotDeleteAll() {
+        return rules.generateSelectAll();
+    }
 
     public FullyQualifiedJavaType calculateAllFieldsClass() {
         return rules.calculateAllFieldsClass();
@@ -121,6 +128,9 @@ public class RulesDelegate implements Rules {
     }
 
     public boolean generateSelectByPrimaryKey() {
+        return rules.generateSelectByPrimaryKey();
+    }
+    public boolean generateSelectNotDeleteByPrimaryKey() {
         return rules.generateSelectByPrimaryKey();
     }
 

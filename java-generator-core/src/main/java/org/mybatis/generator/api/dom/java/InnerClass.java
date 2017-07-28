@@ -364,7 +364,9 @@ public class InnerClass extends JavaElement {
     public FullyQualifiedJavaType getType() {
         return type;
     }
-
+    public void setType(FullyQualifiedJavaType type) {
+        this.type = type;
+    }
     /**
      * Checks if is abstract.
      *

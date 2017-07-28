@@ -54,7 +54,6 @@ public class BaseRecordGenerator extends AbstractJavaGenerator {
                 "Progress.8", table.toString())); //$NON-NLS-1$
         Plugin plugins = context.getPlugins();
         CommentGenerator commentGenerator = context.getCommentGenerator();
-
         TopLevelClass topLevelClass = new TopLevelClass(introspectedTable
                 .getBaseRecordType());
         topLevelClass.setVisibility(JavaVisibility.PUBLIC);

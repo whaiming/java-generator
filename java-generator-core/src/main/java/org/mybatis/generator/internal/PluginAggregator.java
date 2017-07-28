@@ -641,6 +641,20 @@ public final class PluginAggregator implements Plugin {
 
         return rc;
     }
+    public boolean clientSelectNotDeleteByPrimaryKeyMethodGenerated(Method method,
+                                                           Interface interfaze, IntrospectedTable introspectedTable) {
+        boolean rc = true;
+
+        for (Plugin plugin : plugins) {
+            if (!plugin.clientSelectNotDeleteByPrimaryKeyMethodGenerated(method, interfaze,
+                    introspectedTable)) {
+                rc = false;
+                break;
+            }
+        }
+
+        return rc;
+    }
 
     public boolean clientSelectByPrimaryKeyMethodGenerated(Method method,
             TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
@@ -1185,6 +1199,19 @@ public final class PluginAggregator implements Plugin {
 
         for (Plugin plugin : plugins) {
             if (!plugin.sqlMapSelectAllElementGenerated(element, introspectedTable)) {
+                rc = false;
+                break;
+            }
+        }
+
+        return rc;
+    }
+    public boolean sqlMapSelectNotDeleteAllElementGenerated(XmlElement element,
+                                                   IntrospectedTable introspectedTable) {
+        boolean rc = true;
+
+        for (Plugin plugin : plugins) {
+            if (!plugin.sqlMapSelectNotDeleteAllElementGenerated(element, introspectedTable)) {
                 rc = false;
                 break;
             }

@@ -228,6 +228,10 @@ public class Interface extends JavaElement implements CompilationUnit {
         return type;
     }
 
+    public void setType(FullyQualifiedJavaType type){
+        this.type = type;
+    }
+
     /* (non-Javadoc)
      * @see org.mybatis.generator.api.dom.java.CompilationUnit#getSuperClass()
      */
