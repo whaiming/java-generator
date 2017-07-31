@@ -310,7 +310,4 @@ public class InnerEnum extends JavaElement {
         return type;
     }
 
-    public void setType(FullyQualifiedJavaType type){
-        this.type = type;
-    }
 }

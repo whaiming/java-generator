@@ -192,10 +192,6 @@ public class FullyQualifiedJavaType implements
         return packageName;
     }
 
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
-
     /**
      * Gets the short name.
      *
@@ -238,10 +234,6 @@ public class FullyQualifiedJavaType implements
     
     public String getShortNameWithoutTypeArguments() {
         return baseShortName;
-    }
-
-    public void setBaseShortName(String baseShortName) {
-        this.baseShortName = baseShortName;
     }
 
     /*
@@ -649,7 +641,4 @@ public class FullyQualifiedJavaType implements
         return typeArguments;
     }
 
-    public void setBaseQualifiedName(String baseQualifiedName) {
-        this.baseQualifiedName = baseQualifiedName;
-    }
 }
