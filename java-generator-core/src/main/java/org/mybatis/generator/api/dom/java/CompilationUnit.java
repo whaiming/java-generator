@@ -81,7 +81,6 @@ public interface CompilationUnit {
      * @return the type
      */
     FullyQualifiedJavaType getType();
-    void setType(FullyQualifiedJavaType type);
 
     /**
      * Adds the imported type.
