@@ -51,7 +51,7 @@
   tables.
 -->
 <!ELEMENT context (property*, plugin*, commentGenerator?, (connectionFactory | jdbcConnection), javaTypeResolver?,
-        javaBoGenerator?,javaModelGenerator, sqlMapGenerator?, javaClientGenerator?,javaServiceGenerator?,javaDomainGenerator?, table+)>
+        javaBoGenerator?,javaDomainGenerator?,javaServiceGenerator?,javaModelGenerator, sqlMapGenerator?, javaClientGenerator?, table+)>
 <!ATTLIST context id ID #REQUIRED
   defaultModelType CDATA #IMPLIED
   targetRuntime CDATA #IMPLIED
@@ -108,6 +108,16 @@
         targetPackage CDATA #REQUIRED
         targetProject CDATA #REQUIRED>
 
+<!ELEMENT javaDomainGenerator (property*)>
+<!ATTLIST javaDomainGenerator
+        targetPackage CDATA #REQUIRED
+        targetProject CDATA #REQUIRED>
+
+<!ELEMENT javaServiceGenerator (property*)>
+<!ATTLIST javaServiceGenerator
+        targetPackage CDATA #REQUIRED
+        targetProject CDATA #REQUIRED>
+
 <!--
   The javaModelGenerator element is used to define properties of the Java Model Generator.
   The Java Model Generator builds primary key classes, record classes, and Query by Example
@@ -150,16 +160,6 @@
   targetPackage CDATA #REQUIRED
   targetProject CDATA #REQUIRED
   implementationPackage CDATA #IMPLIED>
-
-<!ELEMENT javaServiceGenerator (property*)>
-<!ATTLIST javaServiceGenerator
-        targetPackage CDATA #REQUIRED
-        targetProject CDATA #REQUIRED>
-
-<!ELEMENT javaDomainGenerator (property*)>
-<!ATTLIST javaDomainGenerator
-        targetPackage CDATA #REQUIRED
-        targetProject CDATA #REQUIRED>
 
 <!--
   The table element is used to specify a database table that will be the source information
