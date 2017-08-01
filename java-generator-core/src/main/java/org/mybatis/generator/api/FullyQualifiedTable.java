@@ -269,9 +269,9 @@ public class FullyQualifiedTable {
         if (stringHasValue(boObjectName)) {
             return boObjectName;
         } else if (stringHasValue(runtimeTableName)) {
-            return getCamelCaseString(runtimeTableName, true);
+            return getCamelCaseString(runtimeTableName, true)+"Bo";
         } else {
-            return getCamelCaseString(introspectedTableName, true);
+            return getCamelCaseString(introspectedTableName, true)+"Bo";
         }
     }
     /**
