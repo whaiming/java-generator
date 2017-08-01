@@ -223,11 +223,13 @@ public class MyBatisGenerator {
         /**
          * 如果JavaServiceGeneratorConfiguration存在则调用相关方法
          */
-        if (configuration.getContexts().get(0).getJavaServiceGeneratorConfiguration()!=null)
-        JavaServiceGenerator.addJavaServiceGenerator(assignmentServiceTemplateEntity());
+        for (Context c:configuration.getContexts()) {
+            if (c.getJavaServiceGeneratorConfiguration() != null)
+                JavaServiceGenerator.addJavaServiceGenerator(assignmentServiceTemplateEntity());
 
-        if (configuration.getContexts().get(0).getJavaDomainGeneratorConfiguration()!=null)
-        JavaDomainGenerator.addJavaDomainGenerator(assignmentDomainTemplateEntity());
+            if (c.getJavaDomainGeneratorConfiguration() != null)
+                JavaDomainGenerator.addJavaDomainGenerator(assignmentDomainTemplateEntity());
+        }
 
         generatedJavaFiles.clear();
         generatedXmlFiles.clear();
@@ -319,11 +321,6 @@ public class MyBatisGenerator {
                             gjf.getFileEncoding());
 
                 } else if (shellCallback.isOverwriteEnabled()) {
-                    JavaFileMergerJaxp.mergeJavaFile(gjf
-                                    .getFormattedContent(), targetFile
-                                    .getAbsolutePath(),
-                            MergeConstants.OLD_ELEMENT_TAGS,
-                            gjf.getFileEncoding());
                     source = gjf.getFormattedContent();
                     warnings.add(getString("Warning.11", //$NON-NLS-1$
                             targetFile.getAbsolutePath()));

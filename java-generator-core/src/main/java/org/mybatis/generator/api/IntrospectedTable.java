@@ -1417,13 +1417,6 @@ public abstract class IntrospectedTable {
         sb.append(fullyQualifiedTable.getBoObjectName());
         setBaseRecordType(sb.toString());
 
-        sb.setLength(0);
-        sb.append(pakkage);
-        sb.append('.');
-        sb.append(fullyQualifiedTable.getBoObjectName());
-        sb.append("WithBLOBs"); //$NON-NLS-1$
-        setRecordWithBLOBsType(sb.toString());
-
     }
     /**
      * Calculate java model package.
