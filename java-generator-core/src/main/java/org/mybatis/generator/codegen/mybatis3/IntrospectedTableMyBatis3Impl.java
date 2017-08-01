@@ -187,12 +187,12 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
             javaBoGenerators.add(javaGenerator);
         }
 
-        if (getRules().generateRecordWithBLOBsClass()) {
-            AbstractJavaGenerator javaGenerator = new RecordWithBLOBsGenerator();
-            initializeAbstractGenerator(javaGenerator, warnings,
-                    progressCallback);
-            javaBoGenerators.add(javaGenerator);
-        }
+//        if (getRules().generateRecordWithBLOBsClass()) {
+//            AbstractJavaGenerator javaGenerator = new RecordWithBLOBsGenerator();
+//            initializeAbstractGenerator(javaGenerator, warnings,
+//                    progressCallback);
+//            javaBoGenerators.add(javaGenerator);
+//        }
     }
 
 

@@ -29,8 +29,8 @@ public class JavaFileMergerJaxp {
             Reader in = new FileReader(existingFileFullPath);
             copy(in,out);
             String regerx = "\\/\\*\\*[\\s\\S]*(@mbg.generated)[\\s\\S]*\\}";
-            String str = out.toString().replaceAll(regerx,"");
-            System.out.println(str);
+//            String str = out.toString().replaceAll(regerx,"");
+//            System.out.println(str);
         } catch (IOException e) {
             e.printStackTrace();
         }

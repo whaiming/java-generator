@@ -22,14 +22,14 @@ public class JavaDomainGenerator {
             for (DomainTemplateEntity d:domainTemplateEntities) {
                 DomainTemplateEntity.DomainTemplate domainTemplate = d.getDomainTemplate();
                 DomainTemplateEntity.NativeDomainTemplate nativeDomainTemplate = d.getNativeDomainTemplate();
-                cfg.setClassForTemplateLoading(JavaServiceGenerator.class, "/template"); //指定模板所在的classpath目录
+                cfg.setClassForTemplateLoading(JavaDomainGenerator.class, "/template"); //指定模板所在的classpath目录
                 Template t = cfg.getTemplate("DomainTemplate"); //指定模板
                 File f = new File(System.getProperty("user.dir") +"/"+ domainTemplate.getProjectTargetPackage());
                 f.mkdirs();
                 FileOutputStream fos = new FileOutputStream(new File(System.getProperty("user.dir") +"/"+ domainTemplate.getProjectTargetPackage() + domainTemplate.getDomainInterface()+".java")); //java文件的生成目录
                 t.process(domainTemplate, new OutputStreamWriter(fos, "utf-8")); //
                 Configuration cfg1 = new  Configuration();
-                cfg1.setClassForTemplateLoading(JavaServiceGenerator.class, "/template"); //指定模板所在的classpath目录
+                cfg1.setClassForTemplateLoading(JavaDomainGenerator.class, "/template"); //指定模板所在的classpath目录
                 Template t1 = cfg1.getTemplate("NativeDomainTemplate"); //指定模板
                 FileOutputStream fos1 = new FileOutputStream(new File(System.getProperty("user.dir") +"/"+ nativeDomainTemplate.getProjectTargetPackage() + nativeDomainTemplate.getNativeDomainClazz()+".java")); //java文件的生成目录
                 t1.process(nativeDomainTemplate, new OutputStreamWriter(fos1, "utf-8")); //

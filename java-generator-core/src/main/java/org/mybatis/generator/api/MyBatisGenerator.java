@@ -223,11 +223,13 @@ public class MyBatisGenerator {
         /**
          * 如果JavaServiceGeneratorConfiguration存在则调用相关方法
          */
-        if (configuration.getContexts().get(0).getJavaServiceGeneratorConfiguration()!=null)
-        JavaServiceGenerator.addJavaServiceGenerator(assignmentServiceTemplateEntity());
+        for (Context c:configuration.getContexts()) {
+            if (c.getJavaServiceGeneratorConfiguration() != null)
+                JavaServiceGenerator.addJavaServiceGenerator(assignmentServiceTemplateEntity());
 
-        if (configuration.getContexts().get(0).getJavaDomainGeneratorConfiguration()!=null)
-        JavaDomainGenerator.addJavaDomainGenerator(assignmentDomainTemplateEntity());
+            if (c.getJavaDomainGeneratorConfiguration() != null)
+                JavaDomainGenerator.addJavaDomainGenerator(assignmentDomainTemplateEntity());
+        }
 
         generatedJavaFiles.clear();
         generatedXmlFiles.clear();
