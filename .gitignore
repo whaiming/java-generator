@@ -25,7 +25,6 @@ gen
 /.settings/
 .project
 .DS_Store
-*generatorConfig.xml
 target
 ree.txt
 tree.txt
