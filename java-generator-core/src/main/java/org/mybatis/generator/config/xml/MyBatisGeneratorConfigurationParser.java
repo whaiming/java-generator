@@ -230,7 +230,7 @@ public class MyBatisGeneratorConfigurationParser {
         String schema = attributes.getProperty("schema"); //$NON-NLS-1$
         String tableName = attributes.getProperty("tableName"); //$NON-NLS-1$
 
-        String boObjectName = attributes.getProperty("boObjectName"); //$NON-NLS-1$
+        String boObjectName = attributes.getProperty("domainObjectName"); //$NON-NLS-1$
 
         String domainObjectName = attributes.getProperty("domainObjectName"); //$NON-NLS-1$
         String alias = attributes.getProperty("alias"); //$NON-NLS-1$
@@ -287,8 +287,8 @@ public class MyBatisGeneratorConfigurationParser {
 
 
 
-        if (stringHasValue(boObjectName)) {
-            tc.setBoObjectName(boObjectName);
+        if (stringHasValue(domainObjectName)) {
+            tc.setBoObjectName(domainObjectName+"Bo");
         }
 
         if (stringHasValue(domainObjectName)) {

@@ -16,6 +16,8 @@
 package org.mybatis.generator.api;
 
 import static org.mybatis.generator.internal.util.ClassloaderUtility.getCustomClassloader;
+import static org.mybatis.generator.internal.util.JavaBeansUtil.getCamelCaseString;
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 import java.io.BufferedWriter;
@@ -469,19 +471,19 @@ public class MyBatisGenerator {
         List<ServiceTemplateEntity> serviceTemplateEntities = new ArrayList<>();
         for (Context c:contexts){
             JavaServiceGeneratorConfiguration jgc = c.getJavaServiceGeneratorConfiguration();
-
             List<TableConfiguration> tableConfigurations = c.getTableConfigurations();
             for (TableConfiguration t:tableConfigurations){
+                String domainObjectName = this.getDomainObjectName(t);
                 ServiceTemplateEntity serviceTemplateEntity = new ServiceTemplateEntity();
-                serviceTemplateEntity.setClassName(t.getDomainObjectName()+"Service");
+                serviceTemplateEntity.setClassName(domainObjectName+"Service");
                 String projectTargetPackage = jgc.getTargetProject()+"/"+jgc.getTargetPackage().replaceAll("\\.","/")+"/";
                 serviceTemplateEntity.setProjectTargetPackage(projectTargetPackage);
                 serviceTemplateEntity.setTemplatePackage(jgc.getTargetPackage());
-                serviceTemplateEntity.setMapperType(t.getDomainObjectName()+"Mapper");
-                serviceTemplateEntity.setMapperName(t.getDomainObjectName().toLowerCase()+"Mapper");
-                serviceTemplateEntity.setBoClazz(t.getBoObjectName());
-                serviceTemplateEntity.setMapperPackage(c.getJavaClientGeneratorConfiguration().getTargetPackage()+"."+t.getDomainObjectName()+"Mapper");
-                serviceTemplateEntity.setBoPackage(c.getJavaBoGeneratorConfiguration().getTargetPackage()+"."+t.getBoObjectName());
+                serviceTemplateEntity.setMapperType(domainObjectName+"Mapper");
+                serviceTemplateEntity.setMapperName(Character.toLowerCase(domainObjectName.charAt(0)) + domainObjectName.substring(1)+"Mapper");
+                serviceTemplateEntity.setBoClazz(domainObjectName+"Bo");
+                serviceTemplateEntity.setMapperPackage(c.getJavaClientGeneratorConfiguration().getTargetPackage()+"."+domainObjectName+"Mapper");
+                serviceTemplateEntity.setBoPackage(c.getJavaBoGeneratorConfiguration().getTargetPackage()+"."+domainObjectName+"Bo");
                 serviceTemplateEntities.add(serviceTemplateEntity);
             }
         }
@@ -495,30 +497,31 @@ public class MyBatisGenerator {
             JavaDomainGeneratorConfiguration jdc = c.getJavaDomainGeneratorConfiguration();
             List<TableConfiguration> tableConfigurations = c.getTableConfigurations();
             for (TableConfiguration t:tableConfigurations){
+                String domainObjectName = this.getDomainObjectName(t);
                 DomainTemplateEntity domainTemplateEntity = new DomainTemplateEntity();
                 DomainTemplateEntity.DomainTemplate domainTemplate = new DomainTemplateEntity.DomainTemplate();
                 DomainTemplateEntity.NativeDomainTemplate nativeDomainTemplate = new DomainTemplateEntity.NativeDomainTemplate();
                 domainTemplate.setDomainPackage(jdc.getTargetPackage());
-                domainTemplate.setBoPackage(c.getJavaBoGeneratorConfiguration().getTargetPackage()+"."+t.getBoObjectName());
-                domainTemplate.setBoType(t.getBoObjectName());
-                domainTemplate.setDomainInterface(t.getDomainObjectName()+"Domain");
+                domainTemplate.setBoPackage(c.getJavaBoGeneratorConfiguration().getTargetPackage()+"."+domainObjectName+"Bo");
+                domainTemplate.setBoType(domainObjectName+"Bo");
+                domainTemplate.setDomainInterface(domainObjectName+"Domain");
                 domainTemplate.setProjectTargetPackage(jdc.getTargetProject()+"/"+jdc.getTargetPackage().replaceAll("\\.","/")+"/");
                 nativeDomainTemplate.setNativeDomainPackage(jdc.getTargetPackage());
-                nativeDomainTemplate.setBoPackage(c.getJavaBoGeneratorConfiguration().getTargetPackage()+"."+t.getBoObjectName());
-                nativeDomainTemplate.setModelPackage(c.getJavaModelGeneratorConfiguration().getTargetPackage()+"."+t.getDomainObjectName());
-                nativeDomainTemplate.setBoType(t.getBoObjectName());
-                nativeDomainTemplate.setDomainInterface(t.getDomainObjectName()+"Domain");
-                String str = t.getDomainObjectName()+"Domain";
+                nativeDomainTemplate.setBoPackage(c.getJavaBoGeneratorConfiguration().getTargetPackage()+"."+domainObjectName+"Bo");
+                nativeDomainTemplate.setModelPackage(c.getJavaModelGeneratorConfiguration().getTargetPackage()+"."+domainObjectName);
+                nativeDomainTemplate.setBoType(domainObjectName+"Bo");
+                nativeDomainTemplate.setDomainInterface(domainObjectName+"Domain");
+                String str = domainObjectName+"Domain";
                 str = Character.toLowerCase(str.charAt(0)) + str.substring(1);
                 nativeDomainTemplate.setDomainName(str);
-                nativeDomainTemplate.setModelClazz(t.getDomainObjectName());
-                nativeDomainTemplate.setModelServiceClazz(t.getDomainObjectName()+"Service");
-                str = t.getDomainObjectName()+"Service";
+                nativeDomainTemplate.setModelClazz(domainObjectName);
+                nativeDomainTemplate.setModelServiceClazz(domainObjectName+"Service");
+                str = domainObjectName+"Service";
                 str = Character.toLowerCase(str.charAt(0)) + str.substring(1);
                 nativeDomainTemplate.setModelServiceName(str);
                 nativeDomainTemplate.setProjectTargetPackage(jdc.getTargetProject()+"/"+jdc.getTargetPackage().replaceAll("\\.","/")+"/");
-                nativeDomainTemplate.setModelServicePackage(c.getJavaServiceGeneratorConfiguration().getTargetPackage()+"."+t.getDomainObjectName()+"Service");
-                nativeDomainTemplate.setNativeDomainClazz(t.getDomainObjectName()+"NativeDomain");
+                nativeDomainTemplate.setModelServicePackage(c.getJavaServiceGeneratorConfiguration().getTargetPackage()+"."+domainObjectName+"Service");
+                nativeDomainTemplate.setNativeDomainClazz(domainObjectName+"NativeDomain");
                 nativeDomainTemplate.setDomainPackage(domainTemplate.getDomainPackage()+"."+domainTemplate.getDomainInterface());
                 domainTemplateEntity.setDomainTemplate(domainTemplate);
                 domainTemplateEntity.setNativeDomainTemplate(nativeDomainTemplate);
@@ -526,6 +529,13 @@ public class MyBatisGenerator {
             }
         }
         return domainTemplateEntityList;
+    }
+    public String getDomainObjectName(TableConfiguration t) {
+        if (stringHasValue(t.getDomainObjectName())) {
+            return t.getDomainObjectName();
+        } else {
+            return getCamelCaseString(t.getTableName(), true);
+        }
     }
 
 }

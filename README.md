@@ -1,5 +1,5 @@
 1、增加了获取sqlServer数据库字段注释的功能（官网给出的解释是JDBC不支持获取sqlServer字段注释）。
-2、扩展生成Bo，table里添加boObjectName属性，对应的XML配置如下：
+2、扩展生成Bo，对应的XML配置如下：
 <javaBoGeneratortargetPackage="com.btjf.business.authentication.custcertification.Bo"
        targetProject="Java-generator-core/src/main/java">
        <propertyname="enableSubPackages" value="true" />
@@ -69,7 +69,7 @@ enableSelectNotDeleteByPrimaryKey属性，默认为false；
                              <!--targetProject="java-generator-core/src/main/java">-->  
         <!--</javaDomainGenerator>-->  
   
-        <table tableName="t_Member" domainObjectName="Member" boObjectName="MemberBo" enableInsert="false" enableUpdateByExample = "false" enableSelectAll="true" enableSelectNotDeleteAll="true"  
+        <table tableName="t_Member" domainObjectName="Member"  enableInsert="false" enableUpdateByExample = "false" enableSelectAll="true" enableSelectNotDeleteAll="true"  
                enableSelectNotDeleteByPrimaryKey = "true"  
         >  
             <property name="useActualColumnNames" value="true"/>  

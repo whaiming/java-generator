@@ -171,7 +171,6 @@
   schema CDATA #IMPLIED
   tableName CDATA #REQUIRED
   alias CDATA #IMPLIED
-  boObjectName CDATA #IMPLIED
   domainObjectName CDATA #IMPLIED
   mapperName CDATA #IMPLIED
   sqlProviderName CDATA #IMPLIED
