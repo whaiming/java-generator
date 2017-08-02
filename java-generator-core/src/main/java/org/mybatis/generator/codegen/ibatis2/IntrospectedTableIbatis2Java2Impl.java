@@ -46,6 +46,7 @@ import org.mybatis.generator.internal.ObjectFactory;
  * 
  */
 public class IntrospectedTableIbatis2Java2Impl extends IntrospectedTable {
+    protected List<AbstractJavaGenerator> javaBoGenerators;
     protected List<AbstractJavaGenerator> javaModelGenerators;
     protected List<AbstractJavaGenerator> daoGenerators;
     protected AbstractXmlGenerator sqlMapGenerator;
@@ -140,6 +141,23 @@ public class IntrospectedTableIbatis2Java2Impl extends IntrospectedTable {
         abstractGenerator.setIntrospectedTable(this);
         abstractGenerator.setProgressCallback(progressCallback);
         abstractGenerator.setWarnings(warnings);
+    }
+    public List<GeneratedJavaFile> getBoGeneratedJavaFiles() {
+        List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
+
+        for (AbstractJavaGenerator javaGenerator : javaBoGenerators) {
+            List<CompilationUnit> compilationUnits = javaGenerator
+                    .getCompilationUnits();
+            for (CompilationUnit compilationUnit : compilationUnits) {
+                GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit,
+                        context.getJavaBoGeneratorConfiguration()
+                                .getTargetProject(),
+                        context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
+                        context.getJavaFormatter());
+                answer.add(gjf);
+            }
+        }
+        return answer;
     }
 
     @Override

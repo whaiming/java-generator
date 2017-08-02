@@ -481,9 +481,9 @@ public class MyBatisGenerator {
                 serviceTemplateEntity.setTemplatePackage(jgc.getTargetPackage());
                 serviceTemplateEntity.setMapperType(domainObjectName+"Mapper");
                 serviceTemplateEntity.setMapperName(Character.toLowerCase(domainObjectName.charAt(0)) + domainObjectName.substring(1)+"Mapper");
-                serviceTemplateEntity.setBoClazz(domainObjectName+"Bo");
+                serviceTemplateEntity.setModelClazz(domainObjectName);
                 serviceTemplateEntity.setMapperPackage(c.getJavaClientGeneratorConfiguration().getTargetPackage()+"."+domainObjectName+"Mapper");
-                serviceTemplateEntity.setBoPackage(c.getJavaBoGeneratorConfiguration().getTargetPackage()+"."+domainObjectName+"Bo");
+                serviceTemplateEntity.setModelPackage(c.getJavaModelGeneratorConfiguration().getTargetPackage()+"."+domainObjectName);
                 serviceTemplateEntities.add(serviceTemplateEntity);
             }
         }
