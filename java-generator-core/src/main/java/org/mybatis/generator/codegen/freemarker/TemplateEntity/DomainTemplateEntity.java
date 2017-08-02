@@ -1,5 +1,8 @@
 package org.mybatis.generator.codegen.freemarker.TemplateEntity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by whm on 2017/7/26.
  */
@@ -29,6 +32,8 @@ public class DomainTemplateEntity {
         private String domainInterface;//domain接口名
         private String boType;//bo类名
         private String ProjectTargetPackage;//文件生成路径
+        private String generatedDate = new SimpleDateFormat("yyyy/MM/dd").format(new Date());//代码生成日期
+        private String generatedTime =  new SimpleDateFormat("HH:mm").format(new Date());//代码生成时间
 
         public String getDomainPackage() {
             return domainPackage;
@@ -69,6 +74,14 @@ public class DomainTemplateEntity {
         public void setProjectTargetPackage(String projectTargetPackage) {
             ProjectTargetPackage = projectTargetPackage;
         }
+
+        public String getGeneratedDate() {
+            return generatedDate;
+        }
+
+        public String getGeneratedTime() {
+            return generatedTime;
+        }
     }
 
     public static class NativeDomainTemplate{
@@ -85,6 +98,8 @@ public class DomainTemplateEntity {
         private String boType;//bo类名
         private String modelClazz;//model类名
         private String ProjectTargetPackage;//文件生成路径
+        private String generatedDate = new SimpleDateFormat("yyyy/MM/dd").format(new Date());//代码生成日期
+        private String generatedTime =  new SimpleDateFormat("HH:mm").format(new Date());//代码生成时间
 
         public String getNativeDomainPackage() {
             return nativeDomainPackage;
@@ -188,6 +203,14 @@ public class DomainTemplateEntity {
 
         public void setProjectTargetPackage(String projectTargetPackage) {
             ProjectTargetPackage = projectTargetPackage;
+        }
+
+        public String getGeneratedDate() {
+            return generatedDate;
+        }
+
+        public String getGeneratedTime() {
+            return generatedTime;
         }
     }
 }

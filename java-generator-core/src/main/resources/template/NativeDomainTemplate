@@ -10,8 +10,13 @@ import javax.annotation.Resource;
 
 
 /**
-*
-* Created by CodeGenerator
+* @author
+* @version 0.0.1
+* @date ${generatedDate}
+* @time ${generatedTime}
+* @function 功能:
+* @describe 版本描述:
+* @modifyLog 修改日志:
 */
 
 @Service("${domainName}")
@@ -22,7 +27,6 @@ public class ${nativeDomainClazz} implements ${domainInterface}{
 
     /**
     * 通过ID获取对象
-    *
     * @param id 账号ID
     * @return ${boType}
     */

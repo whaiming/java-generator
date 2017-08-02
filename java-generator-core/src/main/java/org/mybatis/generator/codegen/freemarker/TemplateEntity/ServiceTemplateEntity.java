@@ -1,5 +1,8 @@
 package org.mybatis.generator.codegen.freemarker.TemplateEntity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by whm on 2017/7/26.
  */
@@ -12,6 +15,8 @@ public class ServiceTemplateEntity {
     private String mapperName;//Mapper类的实例对象名
     private String modelClazz;//对应的model类
     private String projectTargetPackage;//Service生成的目标工程包
+    private String generatedDate = new SimpleDateFormat("yyyy/MM/dd").format(new Date());//代码生成日期
+    private String generatedTime =  new SimpleDateFormat("HH:mm").format(new Date());//代码生成时间
 
     public String getTemplatePackage() {
         return templatePackage;
@@ -75,5 +80,13 @@ public class ServiceTemplateEntity {
 
     public void setProjectTargetPackage(String projectTargetPackage) {
         this.projectTargetPackage = projectTargetPackage;
+    }
+
+    public String getGeneratedDate() {
+        return generatedDate;
+    }
+
+    public String getGeneratedTime() {
+        return generatedTime;
     }
 }
