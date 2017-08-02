@@ -31,10 +31,7 @@ import org.mybatis.generator.codegen.AbstractXmlGenerator;
 import org.mybatis.generator.codegen.mybatis3.javamapper.AnnotatedClientGenerator;
 import org.mybatis.generator.codegen.mybatis3.javamapper.JavaMapperGenerator;
 import org.mybatis.generator.codegen.mybatis3.javamapper.MixedClientGenerator;
-import org.mybatis.generator.codegen.mybatis3.model.BaseRecordGenerator;
-import org.mybatis.generator.codegen.mybatis3.model.ExampleGenerator;
-import org.mybatis.generator.codegen.mybatis3.model.PrimaryKeyGenerator;
-import org.mybatis.generator.codegen.mybatis3.model.RecordWithBLOBsGenerator;
+import org.mybatis.generator.codegen.mybatis3.model.*;
 import org.mybatis.generator.codegen.mybatis3.xmlmapper.XMLMapperGenerator;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.config.TableConfiguration;
@@ -166,33 +163,13 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
 
     protected void calculateJavaBoGenerators(List<String> warnings,
                                              ProgressCallback progressCallback) {
-//        if (getRules().generateExampleClass()) {
-//            AbstractJavaGenerator javaGenerator = new ExampleGenerator();
-//            initializeAbstractGenerator(javaGenerator, warnings,
-//                    progressCallback);
-//            javaBoGenerators.add(javaGenerator);
-//        }
-
-        if (getRules().generatePrimaryKeyClass()) {
-            AbstractJavaGenerator javaGenerator = new PrimaryKeyGenerator();
-            initializeAbstractGenerator(javaGenerator, warnings,
-                    progressCallback);
-            javaBoGenerators.add(javaGenerator);
-        }
-
         if (getRules().generateBaseRecordClass()) {
-            AbstractJavaGenerator javaGenerator = new BaseRecordGenerator();
+            AbstractJavaGenerator javaGenerator = new BoGenerator();
             initializeAbstractGenerator(javaGenerator, warnings,
                     progressCallback);
             javaBoGenerators.add(javaGenerator);
         }
 
-//        if (getRules().generateRecordWithBLOBsClass()) {
-//            AbstractJavaGenerator javaGenerator = new RecordWithBLOBsGenerator();
-//            initializeAbstractGenerator(javaGenerator, warnings,
-//                    progressCallback);
-//            javaBoGenerators.add(javaGenerator);
-//        }
     }
 
 

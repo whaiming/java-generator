@@ -1405,12 +1405,6 @@ public abstract class IntrospectedTable {
         String pakkage = calculateJavaBoPackage();
 
         StringBuilder sb = new StringBuilder();
-        sb.append(pakkage);
-        sb.append('.');
-        sb.append(fullyQualifiedTable.getBoObjectName());
-        sb.append("Key"); //$NON-NLS-1$
-        setPrimaryKeyType(sb.toString());
-
         sb.setLength(0);
         sb.append(pakkage);
         sb.append('.');
