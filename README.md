@@ -12,8 +12,8 @@ enableUpdateByExampleSelective属性，其默认值为true；
 enableUpdateByPrimaryKey
 enableInsert默认改成了false ；
 (3)新增enableSelectAll
-enableSelectNotDele
-enableSelectNotDeleteByPrimaryKey属性，默认为false；
+enableSelectNotDeleteAll
+enableSelectNotDeleteByPrimaryKey属性，默认为true；
 对应的则在Mapper中添加了相应的方法。
 4、结合freemarker和XML生成了简单的Service和domain，对应的XML配置如下：
 <javaServiceGenerator targetPackage="com.btjf.business.authentication.custcertification.service"
@@ -26,7 +26,7 @@ enableSelectNotDeleteByPrimaryKey属性，默认为false；
 5、 注意：javaBoGenerator、javaServiceGenerator均为可选不进行配置，javaDomainGenerator和javaServiceGenerator成对出现（要么都配置，要么都不配置）
  
 6、附上整个的generatorConfig.xml，所有的均以t_member表为例的。
-[html] view plain copy 
+ view plain copy 
 <?xml version="1.0" encoding="UTF-8" ?>  
   
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >  

@@ -42,7 +42,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="t_LoginMemberLog" domainObjectName="MemberLoginLog" delimitIdentifiers="true" enableSelectAll="true" enableSelectNotDeleteAll="true" enableSelectNotDeleteByPrimaryKey="true">
+		<table tableName="t_LoginMemberLog" domainObjectName="MemberLoginLog" delimitIdentifiers="true">
 			<property name="useActualColumnNames" value="true"/>
 			<generatedKey column="FID" sqlStatement="SELECT @@IDENTITY" identity="true" />
 			<columnRenamingRule searchString="^(F|f)" replaceString=""/>

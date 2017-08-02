@@ -143,7 +143,7 @@ public class TableConfiguration extends PropertyHolder {
         insertStatementEnabled = false;
         insertSelectiveStatementEnabled = true;
         selectByPrimaryKeyStatementEnabled = true;
-        selectNotDeleteByPrimaryKeyStatementEnabled = false;
+        selectNotDeleteByPrimaryKeyStatementEnabled = true;
         selectByExampleStatementEnabled = true;
         updateByPrimaryKeyStatementEnabled = false;
         deleteByPrimaryKeyStatementEnabled = true;
@@ -151,8 +151,8 @@ public class TableConfiguration extends PropertyHolder {
         countByExampleStatementEnabled = true;
         updateByExampleStatementEnabled = false;
         updateByExampleSelectiveStatementEnabled = true;
-        selectAllStatementEnabled = false;
-        selectNotDeleteAllStatementEnabled = false;
+        selectAllStatementEnabled = true;
+        selectNotDeleteAllStatementEnabled = true;
     }
 
     public boolean isSelectNotDeleteByPrimaryKeyStatementEnabled() {
