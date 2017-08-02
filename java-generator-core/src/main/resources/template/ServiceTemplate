@@ -3,7 +3,7 @@ package ${templatePackage};
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-import ${boPackage};
+import ${modelPackage};
 import ${mapperPackage};
 
 /**
@@ -16,27 +16,27 @@ public class ${className} {
     @Resource
     private ${mapperType} ${mapperName};
 
-    public void save(${boClazz} boName){
-        this.${mapperName}.insertSelective(boName);
+    public void save(${modelClazz} modelName){
+        this.${mapperName}.insertSelective(modelName);
     }
 
     public void deleteByPrimaryKey(Integer primaryKey){
         this.${mapperName}.deleteByPrimaryKey(primaryKey);
     }
 
-    public ${boClazz} getByPrimaryKey(Integer primaryKey){
+    public ${modelClazz} getByPrimaryKey(Integer primaryKey){
         return this.${mapperName}.selectByPrimaryKey(primaryKey);
     }
 
-    public ${boClazz} getNotDeleteByPrimaryKey(Integer primaryKey){
+    public ${modelClazz} getNotDeleteByPrimaryKey(Integer primaryKey){
         return this.${mapperName}.selectNotDeleteByPrimaryKey(primaryKey);
     }
 
-    public List<${boClazz}> findAll(){
+    public List<${modelClazz}> findAll(){
         return this.${mapperName}.selectAll();
     }
 
-    public List<${boClazz}> findNotDeleteAll(){
+    public List<${modelClazz}> findNotDeleteAll(){
         return this.${mapperName}.selectNotDeleteAll();
     }
 }
