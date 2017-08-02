@@ -770,19 +770,16 @@ public class Context extends PropertyHolder {
                         .contextGenerateAdditionalXmlFiles(introspectedTable));
             }
         }
-        if (introspectedTables != null) {
+        if (introspectedTables != null && this.getJavaBoGeneratorConfiguration()!=null) {
             for (IntrospectedTable introspectedTable : introspectedTables) {
                 callback.checkCancel();
-                if (this.getJavaBoGeneratorConfiguration()!=null) {
                     introspectedTable.initializeBo();
+                    introspectedTable.calculateGenerators(warnings, callback);
+                    generatedJavaFiles.addAll(introspectedTable
+                            .getBoGeneratedJavaFiles());
+                    generatedJavaFiles.addAll(pluginAggregator
+                            .contextGenerateAdditionalJavaFiles(introspectedTable));
                 }
-                introspectedTable.calculateGenerators(warnings, callback);
-                generatedJavaFiles.addAll(introspectedTable
-                        .getBoGeneratedJavaFiles());
-                generatedJavaFiles.addAll(pluginAggregator
-                        .contextGenerateAdditionalJavaFiles(introspectedTable));
-
-            }
         }
 
         generatedJavaFiles.addAll(pluginAggregator
