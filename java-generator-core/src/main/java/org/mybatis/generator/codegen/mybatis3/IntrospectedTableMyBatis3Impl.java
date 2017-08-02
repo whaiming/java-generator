@@ -261,8 +261,7 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
     /* (non-Javadoc)
      * @see org.mybatis.generator.api.IntrospectedTable#getGeneratedJavaFiles()
      */
-    @Override
-    public List<GeneratedJavaFile> getGeneratedJavaFiles() {
+    public List<GeneratedJavaFile> getBoGeneratedJavaFiles(){
         List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
 
         for (AbstractJavaGenerator javaGenerator : javaBoGenerators) {
@@ -270,13 +269,18 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
                     .getCompilationUnits();
             for (CompilationUnit compilationUnit : compilationUnits) {
                 GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit,
-                        context.getJavaModelGeneratorConfiguration()
+                        context.getJavaBoGeneratorConfiguration()
                                 .getTargetProject(),
                         context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
                         context.getJavaFormatter());
                 answer.add(gjf);
             }
         }
+        return answer;
+    }
+    @Override
+    public List<GeneratedJavaFile> getGeneratedJavaFiles() {
+        List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
 
         for (AbstractJavaGenerator javaGenerator : javaModelGenerators) {
             List<CompilationUnit> compilationUnits = javaGenerator

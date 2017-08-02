@@ -1,7 +1,9 @@
 package ${nativeDomainPackage};
 
 import ${boPackage};
+import ${modelPackage};
 import ${modelServicePackage};
+import com.btjf.common.utils.BeanUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
@@ -27,6 +29,7 @@ public class ${nativeDomainClazz} implements ${domainInterface}{
     @Override
     public ${boType} get(Integer id){
         if (id == null) return null;
-        return this.${modelServiceName}.getNotDeleteByPrimaryKey(id);
+        ${modelClazz} modelName = this.${modelServiceName}.getNotDeleteByPrimaryKey(id);
+        return BeanUtil.convert(modelName, ${boType}.class);
     }
 }

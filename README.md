@@ -12,3 +12,7 @@
 4、扩展生成简单的Service和domain，可选，成对出现：
    （1）Service默认方法：save，deleteByPrimaryKey，getByPrimaryKey，getNotDeleteByPrimaryKey，findAll，findNotDeleteAll；
    （2）Domain默认方法：get;
+   
+   
+TODO：
+    1、需要优化重复生成覆盖java代码的问题；

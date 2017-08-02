@@ -1615,6 +1615,8 @@ public abstract class IntrospectedTable {
      * 
      * @return the list of generated Java files for this table
      */
+    public abstract List<GeneratedJavaFile> getBoGeneratedJavaFiles();
+
     public abstract List<GeneratedJavaFile> getGeneratedJavaFiles();
 
     /**

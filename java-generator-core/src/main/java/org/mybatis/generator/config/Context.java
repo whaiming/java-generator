@@ -778,7 +778,7 @@ public class Context extends PropertyHolder {
                 }
                 introspectedTable.calculateGenerators(warnings, callback);
                 generatedJavaFiles.addAll(introspectedTable
-                        .getGeneratedJavaFiles());
+                        .getBoGeneratedJavaFiles());
                 generatedJavaFiles.addAll(pluginAggregator
                         .contextGenerateAdditionalJavaFiles(introspectedTable));
 
