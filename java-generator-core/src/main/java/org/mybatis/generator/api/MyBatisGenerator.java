@@ -15,6 +15,7 @@
  */
 package org.mybatis.generator.api;
 
+import static org.mybatis.generator.internal.JavaFileMergerJaxp.mergeJavaFile;
 import static org.mybatis.generator.internal.util.ClassloaderUtility.getCustomClassloader;
 import static org.mybatis.generator.internal.util.JavaBeansUtil.getCamelCaseString;
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
@@ -222,16 +223,6 @@ public class MyBatisGenerator {
         if (callback == null) {
             callback = new NullProgressCallback();
         }
-        /**
-         * 如果JavaServiceGeneratorConfiguration存在则调用相关方法
-         */
-        for (Context c:configuration.getContexts()) {
-            if (c.getJavaServiceGeneratorConfiguration() != null)
-                JavaServiceGenerator.addJavaServiceGenerator(assignmentServiceTemplateEntity());
-
-            if (c.getJavaDomainGeneratorConfiguration() != null)
-                JavaDomainGenerator.addJavaDomainGenerator(assignmentDomainTemplateEntity());
-        }
 
         generatedJavaFiles.clear();
         generatedXmlFiles.clear();
@@ -280,6 +271,20 @@ public class MyBatisGenerator {
             context.generateFiles(callback, generatedJavaFiles,
                     generatedXmlFiles, warnings);
         }
+        /**
+         * 如果JavaServiceGeneratorConfiguration存在则调用相关方法
+         */
+
+        for (Context c:configuration.getContexts()) {
+            if (c.getJavaServiceGeneratorConfiguration() != null) {
+
+                JavaServiceGenerator.addJavaServiceGenerator(assignmentServiceTemplateEntity());
+            }
+
+            if (c.getJavaDomainGeneratorConfiguration() != null) {
+                JavaDomainGenerator.addJavaDomainGenerator(assignmentDomainTemplateEntity());
+            }
+        }
 
         // now save the files
         if (writeFiles) {
@@ -315,7 +320,6 @@ public class MyBatisGenerator {
             targetFile = new File(directory, gjf.getFileName());
             if (targetFile.exists()) {
                 if (shellCallback.isMergeSupported()) {
-
                     source = shellCallback.mergeJavaFile(gjf
                             .getFormattedContent(), targetFile
                             .getAbsolutePath(),
@@ -323,7 +327,11 @@ public class MyBatisGenerator {
                             gjf.getFileEncoding());
 
                 } else if (shellCallback.isOverwriteEnabled()) {
-                    source = gjf.getFormattedContent();
+                    source = mergeJavaFile(gjf
+                                    .getFormattedContent(), targetFile
+                                    .getAbsolutePath(),
+                            gjf.getFileEncoding());
+//                    source = gjf.getFormattedContent();
                     warnings.add(getString("Warning.11", //$NON-NLS-1$
                             targetFile.getAbsolutePath()));
                 } else {
@@ -469,10 +477,18 @@ public class MyBatisGenerator {
     public List<ServiceTemplateEntity> assignmentServiceTemplateEntity(){
         List<Context> contexts = configuration.getContexts();
         List<ServiceTemplateEntity> serviceTemplateEntities = new ArrayList<>();
+        boolean flag;
         for (Context c:contexts){
             JavaServiceGeneratorConfiguration jgc = c.getJavaServiceGeneratorConfiguration();
             List<TableConfiguration> tableConfigurations = c.getTableConfigurations();
             for (TableConfiguration t:tableConfigurations){
+                flag = false;
+                for (GeneratedJavaFile gjf : generatedJavaFiles) {
+                    if (gjf.getFileName().contains("WithBLOBs")&& gjf.getFileName().contains(t.getDomainObjectName())) {
+                        flag = true;
+                        break;
+                    }
+                }
                 String domainObjectName = this.getDomainObjectName(t);
                 ServiceTemplateEntity serviceTemplateEntity = new ServiceTemplateEntity();
                 serviceTemplateEntity.setClassName(domainObjectName+"Service");
@@ -484,6 +500,7 @@ public class MyBatisGenerator {
                 serviceTemplateEntity.setModelClazz(domainObjectName);
                 serviceTemplateEntity.setMapperPackage(c.getJavaClientGeneratorConfiguration().getTargetPackage()+"."+domainObjectName+"Mapper");
                 serviceTemplateEntity.setModelPackage(c.getJavaModelGeneratorConfiguration().getTargetPackage()+"."+domainObjectName);
+                serviceTemplateEntity.setColumnsHasBLOB(flag);
                 serviceTemplateEntities.add(serviceTemplateEntity);
             }
         }

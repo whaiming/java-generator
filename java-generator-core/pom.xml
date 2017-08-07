@@ -105,17 +105,24 @@
         <dependency>
             <groupId>com.github.javaparser</groupId>
             <artifactId>javaparser-core</artifactId>
+            <version>3.2.10</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mybatis.generator.maven</groupId>
+                    <artifactId>java-generator-maven-plugin</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--<dependency>-->
             <!--<groupId>com.microsoft.sqlserver</groupId>-->
             <!--<artifactId>sqljdbc4</artifactId>-->
             <!--<version>6.0</version>-->
         <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.ibatis</groupId>-->
-            <!--<artifactId>ibatis-core</artifactId>-->
-            <!--<version>3.0</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.apache.ibatis</groupId>
+            <artifactId>ibatis-core</artifactId>
+            <version>3.0</version>
+        </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
@@ -128,6 +135,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.0-rc1</version>
         </dependency>
 
     </dependencies>

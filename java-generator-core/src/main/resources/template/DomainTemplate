@@ -10,12 +10,16 @@ import ${boPackage};
 * @function 功能:
 * @describe 版本描述:
 * @modifyLog 修改日志:
+*
+* @mbg.generated
 */
 public interface ${domainInterface} {
     /**
     * 通过ID获取对象
     * @param id 账号ID
     * @return ${boType}
+    *
+    * @mbg.generated
     */
     ${boType} get(Integer id);
 }

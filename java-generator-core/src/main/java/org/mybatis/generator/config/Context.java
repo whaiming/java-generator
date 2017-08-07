@@ -700,6 +700,7 @@ public class Context extends PropertyHolder {
 
                 callback.checkCancel();
             }
+
         } finally {
             closeConnection(connection);
         }
@@ -752,7 +753,6 @@ public class Context extends PropertyHolder {
                         pluginConfiguration.getConfigurationType(), id));
             }
         }
-
         if (introspectedTables != null) {
             for (IntrospectedTable introspectedTable : introspectedTables) {
                 callback.checkCancel();
@@ -839,4 +839,20 @@ public class Context extends PropertyHolder {
     public void setConnectionFactoryConfiguration(ConnectionFactoryConfiguration connectionFactoryConfiguration) {
         this.connectionFactoryConfiguration = connectionFactoryConfiguration;
     }
+
+//    /**
+//     * 判断表内是否含有BLOB字段的方法
+//     * @param tableConfiguration
+//     * @return
+//     */
+//    public boolean hasBLOBColumns(TableConfiguration tableConfiguration){
+//        boolean columnsHasBLOB = false;
+//        System.out.println(introspectedTables);
+//        for (IntrospectedTable i:introspectedTables){
+//            if (i.getTableConfiguration().getTableName().equals(tableConfiguration.getTableName())){
+//                columnsHasBLOB = i.hasBLOBColumns() ? true :false;
+//            }
+//        }
+//        return columnsHasBLOB;
+//    }
 }

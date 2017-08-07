@@ -46,11 +46,12 @@ public class JavaCodeGenerationTest {
     public void testJavaParse() {
         ByteArrayInputStream is = new ByteArrayInputStream(
                 generatedJavaFile.getCompilationUnit().getFormattedContent().getBytes());
-        try {
-            JavaParser.parse(is);
-        } catch (ParseException e) {
-            fail("Generated Java File " + generatedJavaFile.getFileName() + " will not compile");
-        }
+//        try {
+//            JavaParser.parse(is);
+//        } catch (ParseException e) {
+//            fail("Generated Java File " + generatedJavaFile.getFileName() + " will not compile");
+//        }
+        JavaParser.parse(is);
     }
     
     @Parameters

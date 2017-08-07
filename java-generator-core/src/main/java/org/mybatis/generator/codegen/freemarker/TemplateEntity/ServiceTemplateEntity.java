@@ -17,6 +17,7 @@ public class ServiceTemplateEntity {
     private String projectTargetPackage;//Service生成的目标工程包
     private String generatedDate = new SimpleDateFormat("yyyy/MM/dd").format(new Date());//代码生成日期
     private String generatedTime =  new SimpleDateFormat("HH:mm").format(new Date());//代码生成时间
+    private boolean columnsHasBLOB;//是否包含BLOB字段
 
     public String getTemplatePackage() {
         return templatePackage;
@@ -88,5 +89,13 @@ public class ServiceTemplateEntity {
 
     public String getGeneratedTime() {
         return generatedTime;
+    }
+
+    public boolean isColumnsHasBLOB() {
+        return columnsHasBLOB;
+    }
+
+    public void setColumnsHasBLOB(boolean columnsHasBLOB) {
+        this.columnsHasBLOB = columnsHasBLOB;
     }
 }

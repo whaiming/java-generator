@@ -5,16 +5,22 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import ${modelPackage};
 import ${mapperPackage};
+<#if columnsHasBLOB == true>
+import ${modelPackage}WithBLOBs;
+</#if>
+
 
 /**
-* @author
-* @version 0.0.1
-* @date ${generatedDate}
-* @time ${generatedTime}
-* @function 功能:
-* @describe 版本描述:
-* @modifyLog 修改日志:
-*/
+ * @author
+ * @version 0.0.1
+ * @date ${generatedDate}
+ * @time ${generatedTime}
+ * @function 功能:
+ * @describe 版本描述:
+ * @modifyLog 修改日志:
+ *
+ * @mbg.generated
+ */
 
 @Service
 public class ${className} {
@@ -22,51 +28,67 @@ public class ${className} {
     private ${mapperType} ${mapperName};
 
     /**
-    * 保存 ${modelClazz}
-    * @param modelName 对象
-    */
+     * 保存 ${modelClazz}
+     * @param modelName 对象
+     *
+     * @mbg.generated
+     */
+<#if columnsHasBLOB == true>
+    public void save(${modelClazz}WithBLOBs modelName){
+<#else>
     public void save(${modelClazz} modelName){
+</#if>
         this.${mapperName}.insertSelective(modelName);
     }
 
     /**
-    * 根据主键删除
-    * @param primaryKey 主键
-    */
+     * 根据主键删除
+     * @param primaryKey 主键
+     *
+     * @mbg.generated
+     */
     public void deleteByPrimaryKey(Integer primaryKey){
         this.${mapperName}.deleteByPrimaryKey(primaryKey);
     }
 
     /**
-    * 通过主键获取对象
-    * @param primaryKey 主键
-    * @return ${modelClazz}
-    */
+     * 通过主键获取对象
+     * @param primaryKey 主键
+     * @return ${modelClazz}
+     *
+     * @mbg.generated
+     */
     public ${modelClazz} getByPrimaryKey(Integer primaryKey){
         return this.${mapperName}.selectByPrimaryKey(primaryKey);
     }
 
     /**
-    * 通过主键获取没有被删除的对象
-    * @param primaryKey 主键
-    * @return ${modelClazz}
-    */
+     * 通过主键获取没有被删除的对象
+     * @param primaryKey 主键
+     * @return ${modelClazz}
+     *
+     * @mbg.generated
+     */
     public ${modelClazz} getNotDeleteByPrimaryKey(Integer primaryKey){
         return this.${mapperName}.selectNotDeleteByPrimaryKey(primaryKey);
     }
 
     /**
-    * 查询所有
-    * @return List<${modelClazz}>
-    */
+     * 查询所有
+     * @return List<${modelClazz}>
+     *
+     * @mbg.generated
+     */
     public List<${modelClazz}> findAll(){
         return this.${mapperName}.selectAll();
     }
 
     /**
-    * 查询所有没有被删除的对象
-    * @return List<${modelClazz}>
-    */
+     * 查询所有没有被删除的对象
+     * @return List<${modelClazz}>
+     *
+     * @mbg.generated
+     */
     public List<${modelClazz}> findNotDeleteAll(){
         return this.${mapperName}.selectNotDeleteAll();
     }

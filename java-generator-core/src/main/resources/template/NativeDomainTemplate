@@ -10,14 +10,16 @@ import javax.annotation.Resource;
 
 
 /**
-* @author
-* @version 0.0.1
-* @date ${generatedDate}
-* @time ${generatedTime}
-* @function 功能:
-* @describe 版本描述:
-* @modifyLog 修改日志:
-*/
+ * @author
+ * @version 0.0.1
+ * @date ${generatedDate}
+ * @time ${generatedTime}
+ * @function 功能:
+ * @describe 版本描述:
+ * @modifyLog 修改日志:
+ *
+ * @mbg.generated
+ */
 
 @Service("${domainName}")
 @Transactional(rollbackFor = Exception.class)
@@ -26,10 +28,12 @@ public class ${nativeDomainClazz} implements ${domainInterface}{
     private ${modelServiceClazz} ${modelServiceName};
 
     /**
-    * 通过ID获取对象
-    * @param id 账号ID
-    * @return ${boType}
-    */
+     * 通过ID获取对象
+     * @param id 账号ID
+     * @return ${boType}
+     *
+     * @mbg.generated
+     */
     @Override
     public ${boType} get(Integer id){
         if (id == null) return null;
