@@ -26,7 +26,7 @@ public class DomainTemplateEntity {
         this.nativeDomainTemplate = nativeDomainTemplate;
     }
 
-    public static class DomainTemplate{
+    public static class DomainTemplate implements TemplateEntity{
         private String domainPackage;//domain所在的包
         private String boPackage;//对应的bo对象所在的包
         private String domainInterface;//domain接口名
@@ -84,7 +84,7 @@ public class DomainTemplateEntity {
         }
     }
 
-    public static class NativeDomainTemplate{
+    public static class NativeDomainTemplate implements TemplateEntity{
         private String nativeDomainPackage;//nativeDomain所在的包
         private String domainPackage;//domain所在的包
         private String boPackage;//对应的bo对象所在的包

@@ -3,23 +3,23 @@ package ${domainPackage};
 import ${boPackage};
 
 /**
-* @author
-* @version 0.0.1
-* @date ${generatedDate}
-* @time ${generatedTime}
-* @function 功能:
-* @describe 版本描述:
-* @modifyLog 修改日志:
-*
-* @mbg.generated
-*/
+ * @author
+ * @version 0.0.1
+ * @date ${generatedDate}
+ * @time ${generatedTime}
+ * @function 功能:
+ * @describe 版本描述:
+ * @modifyLog 修改日志:
+ *
+ * @mbg.generated do_not_delete_during_merge
+ */
 public interface ${domainInterface} {
     /**
-    * 通过ID获取对象
-    * @param id 账号ID
-    * @return ${boType}
-    *
-    * @mbg.generated
-    */
+     * 通过ID获取对象
+     * @param id 账号ID
+     * @return ${boType}
+     *
+     * @mbg.generated
+     */
     ${boType} get(Integer id);
 }

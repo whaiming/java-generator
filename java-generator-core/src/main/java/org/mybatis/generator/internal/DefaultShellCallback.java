@@ -18,6 +18,7 @@ package org.mybatis.generator.internal;
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.StringTokenizer;
 
 import org.mybatis.generator.api.ShellCallback;
@@ -92,7 +93,7 @@ public class DefaultShellCallback implements ShellCallback {
      * @see org.mybatis.generator.api.ShellCallback#isMergeSupported()
      */
     public boolean isMergeSupported() {
-        return false;
+        return true;
     }
 
     /* (non-Javadoc)
@@ -109,5 +110,11 @@ public class DefaultShellCallback implements ShellCallback {
             String existingFileFullPath, String[] javadocTags, String fileEncoding)
             throws ShellException {
         throw new UnsupportedOperationException();
+    }
+
+    public String mergeJavaFile(String newFileSource,
+                                String existingFileFullPath)
+            throws ShellException, FileNotFoundException {
+        return new JavaFileMergerJaxp().getNewJavaFile(newFileSource,existingFileFullPath);
     }
 }

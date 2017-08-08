@@ -4,13 +4,14 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.mybatis.generator.codegen.freemarker.TemplateEntity.ServiceTemplateEntity;
+import org.mybatis.generator.internal.JavaFileMergerJaxp;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 
 import java.util.List;
+
+import static org.mybatis.generator.codegen.freemarker.FreemarkerUtil.generateFreemarkerFile;
+import static org.springframework.util.FileCopyUtils.copy;
 
 
 /**
@@ -19,24 +20,20 @@ import java.util.List;
  */
 public class JavaServiceGenerator {
 
-    public static void addJavaServiceGenerator(List<ServiceTemplateEntity> serviceTemplateEntitylist) {
-        Configuration cfg = new  Configuration();
-        try  {
-            for (ServiceTemplateEntity s:serviceTemplateEntitylist) {
+    public static void addJavaServiceGenerator(List<ServiceTemplateEntity> serviceTemplateEntityList) {
+        Configuration cfg = new Configuration();
+        try {
+            for (ServiceTemplateEntity s : serviceTemplateEntityList) {
                 cfg.setClassForTemplateLoading(JavaServiceGenerator.class, "/template"); //指定模板所在的classpath目录
                 Template t = cfg.getTemplate("ServiceTemplate"); //指定模板
-                File f = new File(System.getProperty("user.dir") +"/"+ s.getProjectTargetPackage());
+                File f = new File(System.getProperty("user.dir") + "/" + s.getProjectTargetPackage());
                 f.mkdirs();
-                FileOutputStream fos = new FileOutputStream(new File(System.getProperty("user.dir") +"/"+ s.getProjectTargetPackage() + s.getClassName()+".java")); //java文件的生成目录
-                t.process(s, new OutputStreamWriter(fos, "utf-8")); //
-                fos.flush();
-                fos.close();
+                String filePath = System.getProperty("user.dir") + "/" + s.getProjectTargetPackage() + s.getClassName() + ".java";
+                File file = new File(filePath);
+                generateFreemarkerFile(file ,t,s);
             }
         } catch  (IOException e) {
-            e.printStackTrace();
-        } catch  (TemplateException e) {
-            e.printStackTrace();
+        e.printStackTrace();
         }
-
     }
 }

@@ -16,6 +16,7 @@
 package org.mybatis.generator.api;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import org.mybatis.generator.exception.ShellException;
 
@@ -105,6 +106,9 @@ public interface ShellCallback {
      */
     String mergeJavaFile(String newFileSource, String existingFileFullPath,
             String[] javadocTags, String fileEncoding) throws ShellException;
+
+    String mergeJavaFile(String newFileSource, String existingFileFullPath
+                         ) throws ShellException,FileNotFoundException;
 
     /**
      * After all files are saved to the file system, this method is called

@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by whm on 2017/7/26.
  */
-public class ServiceTemplateEntity {
+public class ServiceTemplateEntity implements TemplateEntity{
     private String templatePackage;//包名
     private String modelPackage;//所需要导入的model包
     private String mapperPackage;//所需要导入的mapper包

@@ -19,9 +19,8 @@ import ${modelPackage}WithBLOBs;
  * @describe 版本描述:
  * @modifyLog 修改日志:
  *
- * @mbg.generated
+ * @mbg.generated do_not_delete_during_merge
  */
-
 @Service
 public class ${className} {
     @Resource

@@ -19,48 +19,48 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.mybatis.generator.api.dom.OutputUtilities.newLine;
+
 
 /**
  * Created by whm on 2017/7/24.
  */
 public class JavaFileMergerJaxp {
     public static String mergeJavaFile(String newFileSource,
-                                String existingFileFullPath, String fileEncoding)
+                                String existingFileFullPath)
             throws ShellException, FileNotFoundException {
-        return getNewJavaFile(newFileSource,existingFileFullPath);
-//        List<String> commentedNodeList = getCommentedNodeList(existingFileFullPath);
-//        if (commentedNodeList.size()>0) {
-//            StringBuffer sb = new StringBuffer(newFileSource.substring(0, newFileSource.lastIndexOf("}")));
-//            for (String str : commentedNodeList) {
-//                sb.append("     "+str+System.getProperty("line.separator"));
-//            }
-//            return sb.append(System.getProperty("line.separator")+"}").toString();
-//        }else {
-//            return newFileSource;
-//        }
-
+        return new JavaFileMergerJaxp().getNewJavaFile(newFileSource,existingFileFullPath);
     }
-    public static String getNewJavaFile(String newFileSource, String existingFileFullPath) throws FileNotFoundException {
-
+    public String getNewJavaFile(String newFileSource, String existingFileFullPath) throws FileNotFoundException {
         CompilationUnit newCompilationUnit = JavaParser.parse(newFileSource);
-        StringBuffer sb = new StringBuffer(newCompilationUnit.getPackageDeclaration().get().toString());
+        CompilationUnit existingCompilationUnit = JavaParser.parse(new File(existingFileFullPath));
+        return mergerFile(newCompilationUnit,existingCompilationUnit);
+    }
+
+    public String getNewFreemarkerJavaFile(String newFileSource,String existingSource){
+        CompilationUnit newCompilationUnit = JavaParser.parse(newFileSource);
+        CompilationUnit existingCompilationUnit = JavaParser.parse(existingSource);
+        return mergerFile(newCompilationUnit,existingCompilationUnit);
+    }
+
+    public String mergerFile(CompilationUnit newCompilationUnit,CompilationUnit existingCompilationUnit){
+
+        StringBuilder sb = new StringBuilder(newCompilationUnit.getPackageDeclaration().get().toString());
         newCompilationUnit.removePackageDeclaration();
 
         //合并imports
-        CompilationUnit existingCompilationUnit = JavaParser.parse(new File(existingFileFullPath));
         NodeList<ImportDeclaration> imports = newCompilationUnit.getImports();
         imports.addAll(existingCompilationUnit.getImports());
         Set importSet = new HashSet<ImportDeclaration>();
         importSet.addAll(imports);
 
-//        importSet.forEach(System.out::println);
         NodeList<ImportDeclaration> newImports = new NodeList<>();
         newImports.addAll(importSet);
         newCompilationUnit.setImports(newImports);
         for (ImportDeclaration i:newCompilationUnit.getImports()) {
             sb.append(i.toString());
         }
-
+        newLine(sb);
         NodeList<TypeDeclaration<?>> types = newCompilationUnit.getTypes();
         NodeList<TypeDeclaration<?>> oldTypes = existingCompilationUnit.getTypes();
 
@@ -68,6 +68,8 @@ public class JavaFileMergerJaxp {
             //截取Class
             String classNameInfo = types.get(i).toString().substring(0, types.get(i).toString().indexOf("{")+1);
             sb.append(classNameInfo);
+            newLine(sb);
+            newLine(sb);
             //合并fields
             List<FieldDeclaration> fields = types.get(i).getFields();
             List<FieldDeclaration> oldFields = oldTypes.get(i).getFields();
@@ -78,14 +80,17 @@ public class JavaFileMergerJaxp {
             newFields.addAll(fieldDeclarations);
             for (FieldDeclaration f: newFields){
                 sb.append(f.toString());
+                newLine(sb);
+                newLine(sb);
             }
-
 
             //合并methods
             List<MethodDeclaration> methods = types.get(i).getMethods();
             List<MethodDeclaration> existingMethods = oldTypes.get(i).getMethods();
             for (MethodDeclaration f: methods){
                 sb.append(f.toString());
+                newLine(sb);
+                newLine(sb);
             }
             for (MethodDeclaration m:existingMethods){
                 boolean flag = true;
@@ -97,19 +102,21 @@ public class JavaFileMergerJaxp {
                 }
                 if (flag){
                     sb.append(m.toString());
+                    newLine(sb);
+                    newLine(sb);
                 }
             }
 
             //判断是否有内部类
             types.get(i).getChildNodes();
             for (Node n:types.get(i).getChildNodes()){
-                if (n.toString().contains("class")){
+                if (n.toString().contains("static class")){
                     sb.append(n.toString());
                 }
             }
 
         }
 
-        return sb.append("}").toString();
+        return sb.append(System.getProperty("line.separator")+"}").toString();
     }
 }

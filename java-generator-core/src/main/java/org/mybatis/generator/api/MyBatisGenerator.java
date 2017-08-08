@@ -273,6 +273,7 @@ public class MyBatisGenerator {
         }
         /**
          * 如果JavaServiceGeneratorConfiguration存在则调用相关方法
+         * 如果JavaDomainGeneratorConfiguration存在则调用相关方法
          */
 
         for (Context c:configuration.getContexts()) {
@@ -320,18 +321,17 @@ public class MyBatisGenerator {
             targetFile = new File(directory, gjf.getFileName());
             if (targetFile.exists()) {
                 if (shellCallback.isMergeSupported()) {
+//                    source = shellCallback.mergeJavaFile(gjf
+//                            .getFormattedContent(), targetFile
+//                            .getAbsolutePath(),
+//                            MergeConstants.OLD_ELEMENT_TAGS,
+//                            gjf.getFileEncoding());
                     source = shellCallback.mergeJavaFile(gjf
                             .getFormattedContent(), targetFile
-                            .getAbsolutePath(),
-                            MergeConstants.OLD_ELEMENT_TAGS,
-                            gjf.getFileEncoding());
+                            .getAbsolutePath());
 
                 } else if (shellCallback.isOverwriteEnabled()) {
-                    source = mergeJavaFile(gjf
-                                    .getFormattedContent(), targetFile
-                                    .getAbsolutePath(),
-                            gjf.getFileEncoding());
-//                    source = gjf.getFormattedContent();
+                    source = gjf.getFormattedContent();
                     warnings.add(getString("Warning.11", //$NON-NLS-1$
                             targetFile.getAbsolutePath()));
                 } else {
