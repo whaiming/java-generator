@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+'''<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" 
                                         "http://192.168.100.142/PUBLIC/DTD/mybatis-generator-config_1_0.dtd" >
 <!--配置生成器-->
@@ -255,4 +255,4 @@
     <!----------------------------------------------------------------------------------------------------------------->
 		</table>
 	</context>
-</generatorConfiguration>
+</generatorConfiguration>'''
